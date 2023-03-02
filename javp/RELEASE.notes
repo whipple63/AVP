@@ -1,0 +1,47 @@
+
+The file RELEASE must contain only the release number and nothing more.
+
+The SVN revision number (obtainable through the svnversion or svn info commands)
+contains the exact revision to which this version number refers.
+
+The RELEASE file is manually maintained where the revision number is
+automatically maintained.
+
+This file should contain the revision number as well to aid in finding a
+particular version in the repository if desired.
+
+0.1
+    - initial release
+0.2
+    - added mm3_broker shell script to publish script
+    - added sounder_broker shell script to publish script
+    - included aio shared libraries in distribution lib dir
+    - fixed gui enabled to false (frozen) after shutdown
+    - remove .svn directories from published package
+    - added support for aio port C
+    - fixed bug that was trying to setDirection before lib linked
+0.2.1
+    - added support for internal caching in AioAdapter
+0.2.5
+    - minor fixes to caching
+0.2.6
+    - reduced minimum sample time from 1s to 1/10s
+0.2.7
+    - added onChange to AioAdapter
+0.2.8
+    - Fixed id -> name mapping in Sonde6Data
+0.2.9
+    - Testing wind averaging 
+
+1.0.0 r213
+	- Many many changes and upgrades.
+	- Considered a full production version.
+	
+1.0.6 r323
+	- A lot of clean up, commenting and documentation
+	- Mainly tagged to test automatic version number handling
+	
+1.1.0
+	- Added support for raspberry pi piplate IO
+	- Added support for Airmar Wind Instrument
+	

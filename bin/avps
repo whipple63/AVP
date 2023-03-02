@@ -1,0 +1,8 @@
+ps aux | grep socat | grep -v grep
+ps aux | grep java | grep -v grep
+ps aux | grep python | grep pingTest | grep -v grep
+ps aux | grep python | grep supervisor | grep -v grep
+ps aux | grep python | grep avp_sched | grep -v grep
+ps aux | grep python | grep Local_Interface | grep -v grep
+ps aux | grep python | grep ping_test | grep -v grep
+ps aux | grep python | grep sched_lc | grep -v grep

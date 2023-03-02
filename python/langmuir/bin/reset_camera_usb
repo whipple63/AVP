@@ -1,0 +1,1 @@
+sudo /data/langmuir/bin/usbreset /dev/bus/usb/001/006

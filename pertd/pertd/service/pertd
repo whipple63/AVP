@@ -1,0 +1,35 @@
+#!/bin/sh
+# (c) MandrakeSoft, Chmouel Boudjnah <chmouel@mandrakesoft.com>
+# 	$Id: usb,v 1.52 2004/09/13 07:20:12 flepied Exp $	
+#
+# pertd	        This shell script takes care of starting and stopping
+#               your the Pertelian display
+#
+# description: Start up the Pertelian display daemon.
+
+case $1 in 
+    start)
+ 	nohup /usr/local/bin/pertd > /tmp/pertd1.log 2>&1
+	;;
+    stop)
+	touch /tmp/pertd1/pertstop
+	;;
+
+    status)
+    	ps -efa | grep pertd | grep -v grep
+	exit 0
+	;;
+
+    reload)
+	;;
+    restart)
+	$0 stop
+	$0 start
+	;;
+    *)
+	gprintf "Usage: %s\n" "$(basename $0) {start|stop|restart|status}"
+	exit 0
+	;;
+esac
+
+exit 0

@@ -1,0 +1,93 @@
+pertd - A daemon that displays information on the Pertelian USB LCD display
+
+Overview:
+This program watches 4 files for data.  Each file is displayed on a 
+seperate line of the 4 line LCD display.  If the lines are more than 
+the 20 chars allowed for each line, the data is scrolled horizontally.
+
+The data will wrap into unused lines.  Ex: if line 1 has data, but line 2 does
+not, the data from line 1 will wrap into line 2 and both lines will scroll at
+double speed.
+
+If there is no data to display, the pertd will display the current date/time.
+
+The interface to the daemon is through files.  The names and locations
+of these files are set via a configuration file /etc/pertd.conf
+Optionally, you can specify a configuration file on the pertd command line.
+
+The program is set to go daemon right away.  So when you run pertd,
+you will get a prompt back immediately as it goes off into the background
+and not be terminated when you log off.
+
+Note that on my system (Mandriva 2007), when the user logs off, ownership
+of /dev/ttyUSB0 goes back to root.  So it's probably a good idea to run
+this daemon as root.  See the service directory for turning pertd into
+a service that runs when the system boots.
+
+Configuration:
+stop_file_name - 
+   The name of the file to indicate to pertd to stop.  When the file exists,
+   it's deleted and pertd terminates cleanly.
+   Default: pertstop
+
+backlighton_file_name - 
+   The name of the file to indicate that pertd should turn the backlight on.
+   When the file exists, it's deleted and the backlight is turned on.
+   Default: backlighton
+
+backlightoff_file_name - 
+   The name of the file to indicate that pertd should turn the backlight off.
+   When the file exists, it's deleted and the backlight is turned off.
+   Default: backlightoff
+
+refresh_file_name - 
+   The name of the file to indicate that pertd should schedule at its earliest
+   moment to re-examine for changes the four files it's watching.
+
+data_file_1
+data_file_2
+data_file_3
+data_file_4 -
+   Data files.  The data in data_file_1 will be displayed on the first line,
+   and so on.  If the file does not exist, the line will be blank.
+   Default: pert1 pert2 pert3 pert4
+
+refresh_time -
+   The interval for re-reading the data files for new information.
+   In seconds.
+   Default: 60
+
+delay_time -
+   The interval between screen refreshes in ms.  (1000000ms = 1 second)
+   This will basically control how fast the Pertelian scrolls the data
+   across the screen.
+   Default: 500000 (1/2 second)
+
+char_delay -
+   The delay between each character sent to the Pertelian.  This delay prevents
+   the program from sending data too fast and causing garbled output on the
+   display.  Newer systems may not need any delay, so I made this configurable.
+   The delay is in ms.  1 ms is usually needed for old systems.  If your
+   display is very slow, reduce this to 0.  If the output is garbled, put it
+   to 1.
+   Default: 1
+
+device - 
+   The device the Pertelian is on.
+   Default: /dev/ttyUSB0
+
+pidfile -
+   The path and filename for where the daemon's PID will be written.
+
+backlightmgt -
+   Backlight management.  Setting this to 1 will make pertd manage the
+   backlight.  Basically, if there is data to display, the backlight is on.
+   If there is no data, the backlight is off.
+   Default: 0
+   Set it to 1 to turn backlight management on.
+
+I release my code into the Public Domain.  Have fun, but use this code
+and the resulting program at your own risk. --Ron Lauzon
+
+2006/11/17 Updated by Pred S. Bundalo
+2007/03/05 Updated by Ron Lauzon

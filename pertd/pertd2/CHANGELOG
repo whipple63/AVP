@@ -1,0 +1,5 @@
+2007/03/05 RRL
+- Completely changed the interface to the deamon.  The daemon now listens
+  for commands from a fifo it creates instead of through files existing.
+
+  This allowed me to remove much code involving refreshing the data.

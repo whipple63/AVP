@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Jordan Lake Observatory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--	<script type="text/javascript">
+	var ajaxurl = 'https://jordanlakeobservatory.unc.edu/wp-admin/admin-ajax.php';
+	</script>
+-->	
+
+	<link rel='dns-prefetch' href='//its2.unc.edu' />
+	<link rel='dns-prefetch' href='//s.w.org' />
+	
+<!--	<script type="text/javascript">
+		window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.9"}};
+		!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+	</script>
+-->	
+	<style type="text/css">
+		img.wp-smiley,
+		img.emoji {
+			display: inline !important;
+			border: none !important;
+			box-shadow: none !important;
+			height: 1em !important;
+			width: 1em !important;
+			margin: 0 .07em !important;
+			vertical-align: -0.1em !important;
+			background: none !important;
+			padding: 0 !important;
+		}
+	</style>
+	
+	<link rel="stylesheet" href="http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/css/main.min.css?ver=259fc31ac0ece324d8c3a19fc0aa5463">
+
+	<style id='roots_main-inline-css' type='text/css'>	
+		body{
+		background-color:#ffffff;
+		background-image: url();
+		background-attachment: fixed;
+		background-size: cover;
+		}
+		.abovefold {
+		background-color:#ffffff;
+		background-image: url();
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		width: 100%;
+		}
+		.abovefold a{color:#505962;}
+	</style>
+	
+	<link rel="stylesheet" href="http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium-web/style.css">
+	
+	<script type='text/javascript' src='https://its2.unc.edu/unc-feeds/alertFeed.js.php?ver=4.7.9'></script>
+	<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+	<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+	<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/js/vendor/modernizr-2.7.0.min.js'></script>
+	<link rel='https://api.w.org/' href='http://jordanlakeobservatory.unc.edu/wp-json/' />
+	<link rel="alternate" type="application/json+oembed" href="http://jordanlakeobservatory.unc.edu/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fjordanlakeobservatory.unc.edu%2F" />
+	<link rel="alternate" type="text/xml+oembed" href="http://jordanlakeobservatory.unc.edu/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fjordanlakeobservatory.unc.edu%2F&#038;format=xml" />
+
+   <script>
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','gaplusu');
+       gaplusu('create', 'UA-5142490-28', 'auto');
+       gaplusu('send', 'pageview');    
+   </script>
+
+	<style>
+	#wp-admin-bar-asu_support_enabled {
+		background-color: #E00000!important;
+	}
+	</style>
+	
+	<script type="text/javascript" id="unc-ub-script" data-color="" src="https://its.unc.edu/web-assets/utility-bar/utility-bar.min.js"></script>
+	                
+	<style type="text/css">
+	   .single #feat-img-h, article.media #feat-img-h {}
+	   .abovefold-container .search-form {}
+	</style>
+
+   <style type="text/css">
+        .bg-primary, .btn-primary, .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus, .label-primary, .btn-primary, .nav-tabs li a:hover, footer.content-info .widget ul li a:hover {
+            background-color: ;
+        }
+        .panel-primary {
+            border-color: ;
+        }
+        .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active, .progress-bar, .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus, a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus, .panel-primary>.panel-heading {
+            background-color:;
+            border-color:;
+        }
+
+        .navbar-default {
+            background-color:;
+            border-color:;
+        }
+
+        a, .text-primary, .btn-primary .badge, .btn-link, .pagination>li>a, .pagination>li>span, a.list-group-item.active>.badge, .nav-pills>.active>a>.badge, .navbar-inverse .navbar-brand, .navbar-inverse .caret, .header-logo a:hover, .brand-logo a:hover, footer .widget ul>li:last-child a, footer ol.vcalendar li a, footer .widget ul li a, footer .widget ul li a:link, .widget ul li a:hover, .widget ul.dropdown-menu li.active a:hover, footer.content-info a:hover, footer.content-info a {
+            color:;
+        }
+
+        .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+            border-top-color: ;
+            border-right-color-value: ;
+            border-bottom-color: ;
+            border-left-color-value: ;
+        }
+
+        footer .widget ul>li a:hover, footer .widget ul>li:last-child a:hover {color: #fff;}
+
+        .btn-primary:hover {
+            background-color:;
+        }
+
+        .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li.active > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+            background-color:;
+        }
+
+        .navbar-default .navbar-toggle {
+            border-color: ;
+        }
+
+        a:hover, a:focus, footer.content-info a:hover {
+            color: ;
+        }
+    </style>
+    
+	<link rel="canonical" href="http://jordanlakeobservatory.unc.edu/">
+	
+	<!-- Begin Custom CSS -->
+	<style type="text/css">
+	</style><!-- End Custom CSS -->
+
+   <link rel="alternate" type="application/rss+xml" title="Jordan Lake Observatory Feed" href="http://jordanlakeobservatory.unc.edu/feed/">
+   <!-- Favicon -->
+   <link rel="shortcut icon" href="http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/img/ss_img_unc_favicon.ico" />
+
+</head>
+
+
+<body class="home page">
+
+<!--[if lt IE 8]>
+<div class="alert alert-warning">
+    You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+<div class="container-fluid">
+    <div class="row">
+		<div id="abovefold" class="abovefold">
+    		<div class="abovefold-container container">
+         	<div class="row">
+            	<div class="col-sm-8">
+               	<div class="header-logo">
+                  	<a class="brand" href=" http://jordanlakeobservatory.unc.edu ">Jordan Lake Observatory</a>
+                  </div>
+               </div>
+               
+               <div class="col-sm-4">
+               	<form role="search" method="get" class="search-form form-inline" action="http://jordanlakeobservatory.unc.edu/">
+  						<div class="input-group" >
+    						<label class="hide" for="search">Search_for:</label>
+    						<input type="search" id="search" value="" name="s" class="search-field form-control" placeholder="Search this site...">
+						   <span class="input-group-btn">
+						     <button aria-labelledby="header-search" id="Submit" class="search-submit btn btn-default">
+						     <span class="glyphicon glyphicon-search"></span>
+						     <span id="header-search" class="hidden">Submit Search</span>
+						     </button>
+						   </span>
+  						</div>
+						</form>
+					</div>
+        		</div>
+    		</div>
+		</div>
+
+
+		<header id="nav" class="dualheader banner navbar navbar-default navbar-static-top " role="banner">
+	   <div class="navbar-container container">
+      	<div class="">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+             <span class="sr-only">Toggle navigation</span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </button>
+	      <a class="navbar-brand" href="http://jordanlakeobservatory.unc.edu/">Jordan Lake Observatory</a>
+	      </div>
+	      
+        	<div class="row">
+         <nav class="collapse navbar-collapse" role="navigation">
+	         <ul id="menu-primary-navigation" class="nav navbar-nav"><li class="active menu-home"><a href="http://jordanlakeobservatory.unc.edu/">Home</a></li>
+				<li class="menu-water-quality-monitoring"><a href="http://jordanlakeobservatory.unc.edu/water-quality-monitoring/">Water Quality Monitoring</a></li>
+				<li class="menu-vertical-profiler-data"><a href="http://eddy.ims.unc.edu">Vertical Profiler Data</a></li>
+				</ul>
+         </nav>
+		   </div>
+		   
+		</div>
+		</header>
+    </div>
+    
+    <div class="row">
+    </div>
+
+    <div class="wrap row" role="document">
+    	<div class="content container">
+      	<div class="row ">
+         	<main class="main col-sm-9 col-sm-push-3" role="main">
+            	<div class="page-header">
+	        			<h1>
+	            	Home
+	            	</h1>
+    				</div>
+
+            </main><!-- /.main -->
+            
+            <aside class="sidebar col-sm-3 col-sm-pull-9" role="complementary">
+            	<section class="widget archives-3 widget_archive">
+            		<h3>Archives</h3>
+            			<ul>
+							</ul>
+					</section>
+				</aside><!-- /.sidebar -->
+        </div>
+      </div><!-- /.content -->
+    </div><!-- /.wrap -->
+    
+    
+    <div class="row">
+    </div>
+
+    <div class="row">
+    	<footer class="content-info" role="contentinfo">
+  			<div class="footer-container container">
+	  			<div class="row">
+					<section class="widget text-2 widget_text col-md-4 col-sm-6">	
+						<div class="textwidget"></div>
+					</section>		
+	  			</div>
+  			</div>
+  			<div id="copyright">
+         	<p class="copyright">&copy; 2018 Jordan Lake Observatory</p>
+        	</div>
+		</footer>
+		
+		<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/js/parallax.js?ver=1.0'></script>
+		<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/js/scripts.min.js?ver=6317b63d0a03d9e1b3e09708ec3fff72'></script>
+		<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-includes/js/wp-embed.min.js?ver=4.7.9'></script>
+     	<script> 
+     		jQuery('.modal').on('hidden.bs.modal', function (e) {
+       		jQuery('.modal iframe').attr("src", jQuery(".modal  iframe").attr("src"));
+     		});
+     	</script>
+    </div>
+</div>
+
+</body>
+</html>

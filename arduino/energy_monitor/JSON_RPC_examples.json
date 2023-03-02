@@ -1,0 +1,76 @@
+Valid parameters:
+	Voltage
+	Load_Current
+	Charge_Current
+	Load_Power
+	Charge_Power
+	Load_Energy
+	Charge_Energy
+	V_div_low
+	V_div_high
+	Date_UTC
+	Time_UTC
+
+Example JSON requests:
+
+{"method" : "list_data","id" : 18}
+
+{"method" : "status", "params" : {"data":["Voltage","Load_Power"],"style":"verbose"},"id" : 10}
+
+{"method" : "set", "params" : {"Load_Energy":100,"Charge_Energy":0},"id" : 17}
+
+{"method" : "status", "params" : {"data":["Voltage", "Load_Current","Charge_Current"],"style":"terse"},"id" : 13}
+
+{"method" : "status", "params" : {"data":["Load_Power","Charge_Power"],"style":"terse"},"id" : 18}
+
+{"method" : "status", "params" : {"data":["Load_Energy","Charge_Energy"],"style":"terse"},"id" : 134}
+
+ {"params":{"style":"verbose","data":["Charge_Power","V_div_high","Load_Energy","Load_Current","Time_UTC","Date_UTC","Load_Power","Voltage","V_div_low","Charge_Current","Charge_Energy"]},"method":"status","id":1764}
+
+{"method" : "subscribe", "params" : {"data":["Voltage"],"style":"terse","updates":"on_new","min_update_ms":4000},"id" : 14}
+
+{"method" : "subscribe", "params" : {"data":["Voltage"],"style":"verbose","updates":"on_change","min_update_ms":1000,"max_update_ms":5000},"id" : 24}
+
+{"method" : "subscribe", "params" : {"data":["Load_Power", "Charge_Power"],"style":"terse","updates":"on_new","min_update_ms":5000,"max_update_ms":15000},"id" : 15}
+
+{"method" : "subscribe", "params" : {"data":["Load_Energy", "Charge_Energy"],"style":"terse","updates":"on_new","min_update_ms":5000,"max_update_ms":15000},"id" : 15}
+
+{"method" : "unsubscribe", "params" : {"data":["Load_Power", "Charge_Power"]},"id" : 16}
+
+
+{"method" : "unsubscribe", "params" : {"data":["Voltage"]},"id" : 16}
+
+{"method" : "reset", "params" : {"data":["Load_Energy","Charge_Energy"]},"id" : 22}
+
+{"method" : "broker_status","id" : 19}
+
+{"method" : "set", "params" : {"V_div_low":9999.9,"V_div_high":20999.9},"id" : 3545}
+
+{"method" : "status", "params" : {"data":["V_div_low", "V_div_high"],"style":"verbose"},"id" : 345}
+
+{"method" : "set", "params" : {"Date_UTC":20171222,"Time_UTC":154700},"id" : 175}\r
+
+{"method" : "status", "params" : {"data":["Date_UTC","Time_UTC"]},"id" : 10}\r
+
+{"method" : "broker_status", "id" : 1003}
+
+{"method" : "tokenAcquire", "params":{"name":"avp_console.PowerMonConsole"},"id" : 1103}
+
+{"method" : "tokenForceAcquire", "params":{"name":"avp_console.PowerMonConsole"},"id" : 1105}
+
+{"method" : "tokenRelease", "id" : 1104}
+
+{"method" : "tokenOwner", "id" : 1106}
+
+{"result":
+	{"suspended":False,
+	"power_on":True,
+	"instr_connected":True,
+	"db_connected":False,
+	"start_time":19710905153617,
+	"last_data_time":19710905153647,
+	"last_db_time":"None",,"message_time":{"value":19710905153649,"units":"UTC"}},"id":1003}
+	
+	https://ryan_neve@bitbucket.org/ryan_neve/energy_monitor.git
+	
+	

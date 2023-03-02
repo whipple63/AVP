@@ -1,0 +1,131 @@
+﻿{
+    "method" : "list_data",
+    "params" : ["units", "type"],
+    "id":8
+}
+
+
+{
+    "method" : "broker_status",
+    "id":4
+}
+
+{
+    "method" : "tokenAcquire",
+    "params" : {"name" : "testing"},
+    "id":4
+}
+
+{
+    "method" : "tokenRelease",
+    "params" : {"name" : "testing"},
+    "id":4
+}
+
+
+{
+    "method" : "sampling",
+    "id" : 1
+}
+
+{
+    "method" : "status",
+    "params" : {
+        "data" : ["din_7", "relay_6"],
+        "style":"verbose"},
+    "id" : 1
+}
+
+{
+    "method" : "status",
+    "params" : {
+        "data" : ["lat", "lon"],
+        "style":"verbose"},
+    "id" : 11
+}
+
+{
+    "method" : "set",
+    "params" : { "relay_0" : 1 },
+    "id" : 1
+}
+
+{
+    "method" : "set",
+    "params" : { "log_period" : 1.0 },
+    "id" : 1
+}
+
+
+{
+    "method" : "subscribe",
+    "params" : {
+        "data" : ["air_temp"],
+        "min_update_ms" : 3000},
+    "id" : 2
+}
+
+{
+    "method" : "unsubscribe",
+    "params" : {
+        "data" : ["air_temp"]},
+    "id" : 3
+}
+
+{
+    "method" : "subscribe",
+    "params" : {
+        "data" : ["air_pressure"],
+        "min_update_ms" : 3000},
+    "id" : 2
+}
+
+{
+    "method" : "unsubscribe",
+    "params" : {
+        "data" : ["air_pressure"]},
+    "id" : 3
+}
+
+
+
+{
+    "method" : "start_sampling",
+    "id":4
+}
+
+{
+    "method" : "stop_sampling",
+    "id":4
+}
+
+
+{
+    "method" : "start_logging",
+    "id":4
+}
+
+{
+    "method" : "stop_logging",
+    "id":4
+}
+
+{
+    "method" : "suspend",
+    "id":12
+}
+
+{
+    "method" : "resume",
+    "id":13
+}
+
+{
+    "method" : "calibratePressure",
+    "id":14
+}
+
+{
+    "method" : "wipe",
+    "id":15
+}

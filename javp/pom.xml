@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	
+    <groupId>edu.unc.ims</groupId>
+    <artifactId>javp</artifactId>
+    <version>1.1-SNAPSHOT</version>
+	
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+	<build>
+    <plugins>
+	
+		<!-- Specify to add the classpath using the 'lib' prefix -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>2.4</version>
+			<configuration>
+			  <archive>
+				<manifest>
+				  <addClasspath>true</addClasspath>
+				  <classpathPrefix>lib/</classpathPrefix>
+				</manifest>
+			  </archive>
+			</configuration>
+		</plugin>
+		
+		<!-- Copy the dependencies to the target/lib folder -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>2.1</version>
+			<executions>
+			  <execution>
+				<id>copy-dependencies</id>
+				<phase>package</phase>
+				<goals>
+				  <goal>copy-dependencies</goal>
+				</goals>
+				<configuration>
+				  <outputDirectory>${project.build.directory}/lib</outputDirectory>
+				  <overWriteReleases>false</overWriteReleases>
+				  <overWriteSnapshots>false</overWriteSnapshots>
+				  <overWriteIfNewer>true</overWriteIfNewer>
+				</configuration>
+			  </execution>
+			</executions>	  
+		</plugin>
+	  
+		<!-- Copy the conf files to the target/lib 
+		<plugin>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>3.0.2</version>
+			<executions>
+			  <execution>
+				<id>copy-resources</id>
+				<phase>package</phase>
+				<goals>
+				  <goal>copy-resources</goal>
+				</goals>
+				<configuration>
+				  <outputDirectory>${basedir}/target/lib</outputDirectory>
+				  <resources>          
+					<resource>
+					  <directory>${basedir}/lib</directory>
+					  <filtering>true</filtering>
+					  <include>*.conf</include>
+					</resource>
+				  </resources>              
+				</configuration>            
+			  </execution>
+			</executions>
+		</plugin>	  
+	-->
+	  
+    </plugins>
+	</build>
+  
+	<!-- Must use snapshot version of pi4j 1.2 due to a kernel upgrade -->
+	<!-- We can drop this once 1.2 is finally released -->
+	<!-- Pulling this back out because pi4j changed enough to break our code 
+	<repositories>
+	<repository>
+		<id>oss-snapshots-repo</id>
+		<name>Sonatype OSS Maven Repository</name>
+		<url>https://oss.sonatype.org/content/groups/public</url>
+		<snapshots>
+			<enabled>true</enabled>
+			<updatePolicy>always</updatePolicy>
+		</snapshots>
+	</repository>
+	</repositories>
+	-->
+
+    <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.4-701.jdbc3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pi4j</groupId>
+            <artifactId>pi4j-distribution</artifactId>
+            <!--version>1.2-SNAPSHOT</version-->
+            <version>1.1</version>
+            <type>zip</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.pi4j</groupId>
+                    <artifactId>pi4j-device</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.osgi</groupId>
+                    <artifactId>org.osgi.core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.pi4j</groupId>
+                    <artifactId>pi4j-gpio-extension</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+</project>

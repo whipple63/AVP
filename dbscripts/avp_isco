@@ -1,0 +1,29 @@
+-- the following should allow an argument to be passed and use `hostname` if not
+\set dbprefix :dbprefix
+\set lhost `hostname`
+SELECT CASE 
+  WHEN :'dbprefix'= ':dbprefix'
+  THEN :'lhost'
+  ELSE :'dbprefix' 
+END AS "dbprefix"  \gset
+
+\set tablename :dbprefix _isco
+\set casttablename public. :dbprefix _cast
+
+BEGIN;
+CREATE TABLE :tablename (
+    cast_no         int4,
+    loc_code        varchar         NOT NULL,
+    sample_time     timestamptz     NOT NULL,
+    bottle_number   int2            CONSTRAINT positive_bottle_number CHECK (bottle_number > 0),
+    sample_depth    numeric(5,3)    CONSTRAINT positive_sample_depth CHECK (sample_depth >= 0),
+    sample_volume   int4,
+    sample_status   int2,
+    isco_model      text,
+    isco_ID         text,
+    hardware_revision text,
+    software_revision text,
+    PRIMARY KEY (cast_no, loc_code, sample_time),
+    FOREIGN KEY (cast_no, loc_code) REFERENCES :casttablename (cast_no,loc_code) ON DELETE NO ACTION ON UPDATE CASCADE    
+);
+COMMIT;    

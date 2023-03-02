@@ -1,0 +1,36 @@
+-- the following should allow an argument to be passed and use `hostname` if not
+\set dbprefix :dbprefix
+\set lhost `hostname`
+SELECT CASE 
+  WHEN :'dbprefix'= ':dbprefix'
+  THEN :'lhost'
+  ELSE :'dbprefix' 
+END AS "dbprefix"  \gset
+
+\set tablename :dbprefix _schedule
+
+BEGIN;
+CREATE TABLE :tablename (
+    entry_no            serial,
+    loc_code            varchar         NOT NULL,
+    sch_min             varchar,
+    sch_hour            varchar,
+    sch_day             varchar,
+    sch_month           varchar,
+    lisst_cast          boolean,
+    isco_cast           boolean,
+    bottle_number       int2            CONSTRAINT positive_bottle_number CHECK (bottle_number > 0),
+    sample_depth        numeric(5,3)    CONSTRAINT positive_sample_depth CHECK (sample_depth >= 0),
+    sample_volume       int4,
+    PRIMARY KEY (entry_no, loc_code)
+);
+CREATE OR REPLACE RULE schedule_insert AS ON insert
+    TO :tablename
+    DO NOTIFY :tablename;
+CREATE OR REPLACE RULE schedule_update AS ON update
+    TO :tablename
+    DO NOTIFY :tablename;
+CREATE OR REPLACE RULE schedule_delete AS ON delete
+    TO :tablename
+    DO NOTIFY :tablename;
+COMMIT;    

@@ -1,0 +1,25 @@
+Older bootloaders do not properly reset the watchdog hardware on startup 
+which causes a boot loop after the watchdog trips. This can be verified 
+with a 'reboot' command on the tension or winch programs which just let 
+the watchdog time out. 
+
+
+For the Nano:
+Reload the bootloader using the AVR pocket programmer (set programmer to 
+USBtinyISP) by connecting the cables and setting the arduino IDE to use 
+the UNO board. This will burn the optiboot bootloader. After running 
+'burn bootloader', switch the USB cable back to the target board (from 
+the programmer) and remember the leave the IDE set to UNO for this board 
+from now on. 
+
+
+For the Mega2560
+Reload the bootloader using the AVR pocket programmer (set programmer to 
+USBtinyISP) by connecting the cables and setting the arduino IDE to use 
+the Mega2560 board. This will burn the updated mega bootloader. After 
+running 'burn bootloader' (there may be verification errors - this is 
+due to the memory not being 0xFF as when new and should be fine, but 
+double check that is wasn't some other verification error by trying it to 
+see if it works), switch the USB cable back to the target board (from 
+the programmer). 
+

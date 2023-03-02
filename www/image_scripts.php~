@@ -1,0 +1,156 @@
+				<?php
+				$day_folders = glob($site_dir.'20[0-9][0-9][0-9][0-9][0-9][0-9]', GLOB_ONLYDIR);	// get list of folders matching 10 digits, sorted alphabetically
+				
+				echo '<div id="first_data" style="display: none;">';
+				$firstData = substr($day_folders[0], -8, 8);
+				echo htmlspecialchars($firstData);
+				echo '</div>'."\n";
+				
+				echo '<div id="last_data" style="display: none;">';
+				$lastData = substr(end($day_folders), -8, 8);
+				echo htmlspecialchars($lastData);
+				echo '</div>'."\n";
+				
+				if (!empty($_GET['idate'])) {
+					$date_dir = $site_dir.$_GET['idate'];
+				} else {
+					$date_dir = end($day_folders);
+				}
+				
+				$image_folders = glob($date_dir.'/images[0-9][0-9][0-9]', GLOB_ONLYDIR);
+				
+				
+				/** settings **/
+				if (!empty($_GET['idir'])) {
+					$images_dir = $_GET['idir'].'/';
+				} else {
+					$images_dir = end($image_folders).'/';
+				}
+				
+				$thumbs_dir = substr($images_dir,0,-1).'-thumbs/';
+				$thumbs_width = 200;
+				$images_per_row = 3;
+				
+				
+				// Enter each image folder and read the time range and create title links for each
+				echo "\n".'<h4>';
+				if(count($image_folders)) {
+					for ($i=0; $i<count($image_folders); $i++) {
+						$image_files = glob($image_folders[$i].'/P[0-9]*.jpg');
+						if($i>0) { echo ' --- '; }
+						if ( strcmp(substr($images_dir,0,-1), $image_folders[$i])==0 ) {
+							echo "\n".'<span style="border: 2px solid black; padding: .2em">'."\n";
+						}
+						echo '<a href="' . $_SERVER["PHP_SELF"] . '?idate='.$_GET['idate'].'&idir=' . $image_folders[$i] . '">';
+						echo substr($image_files[0], -12,2).':'.substr($image_files[0], -10,2).':'.substr($image_files[0], -8,2) . ' to '
+						. substr(end($image_files), -12,2).':'.substr(end($image_files), -10,2).':'.substr(end($image_files), -8,2) 
+						. '</a>'."\n";		
+						if ( strcmp(substr($images_dir,0,-1), $image_folders[$i])==0 ) {
+							echo '</span>'."\n";
+						}
+					}
+				}
+				echo '</h4>'."\n";
+				
+				// We now have the most recent list of image files
+				
+				
+				echo "\n".'<div id="thumbnailbox">'."\n";
+				
+				/** generate photo gallery **/
+				$image_files = get_files($images_dir);
+				if(count($image_files)) {
+					$index = 0;
+					foreach($image_files as $index=>$file) {
+						$index++;
+						flush();
+						ob_flush();
+						$thumbnail_image = $thumbs_dir.$file;
+						if(!file_exists($thumbs_dir)) { mkdir($thumbs_dir, $mode = 0766); }
+						 	
+						if(!file_exists($thumbnail_image)) {
+							$extension = get_file_extension($thumbnail_image);
+							if($extension) {
+								make_thumb($images_dir.$file,$thumbnail_image,$thumbs_width);
+							}
+						}
+						$ps_items[$index-1] = array("src"=>$images_dir.$file, "w"=>1920, "h"=>1080, "msrc"=>$thumbnail_image );
+//						echo '<a href="',$images_dir.$file,'" class="photo-link smoothbox" rel="gallery"><img src="',$thumbnail_image,'" /></a>'."\n";
+						echo '<a class="photo-link smoothbox" rel="gallery">';
+						echo '<img id="',$index-1,'" src="',$thumbnail_image,'" onclick="openPhotoswipe(this.id)") /></a>'."\n";
+//						if($index % $images_per_row == 0) { echo '<div class="clear"></div>'."\n"; }
+					}
+					echo '<div class="clear"></div>'."\n";
+				}
+				else {
+					echo '<p>There are no images in this gallery.</p>'."\n";
+				}
+				echo "</div>\n";
+
+				// save the photoswipe array to a hidden div
+				echo '<div id="pswp_data" style="display: none;">';
+				$json_array = json_encode($ps_items);
+				echo $json_array;
+				echo '</div>'."\n";
+
+				if ( empty($_GET['idate']) && empty($_GET['idir']) ) {
+					echo "<script type='text/javascript'>\n";
+					echo "document.getElementById('latest_image').innerHTML = ";
+					echo '"<a style=\"cursor: pointer \" >';
+					echo '<img id=\"',$index-1,'\" src=\"',$images_dir.$file,'\"  onclick=\"openPhotoswipe(this.id)\" style=\"max-width:100%\"/></a>';
+					echo '<figcaption>Most recent image</figcaption>"'.";\n";
+					echo "</script>\n";
+				}
+				
+				/* function:  generates thumbnail */
+				function make_thumb($src,$dest,$desired_width) {
+					/* read the source image */
+					$source_image = imagecreatefromjpeg($src);
+					
+					/* See if it failed */
+				    if(!$source_image)
+				    {
+				        /* Create a black image */
+				        $source_image  = imagecreatetruecolor(150, 30);
+				        $bgc = imagecolorallocate($source_image, 255, 255, 255);
+				        $tc  = imagecolorallocate($source_image, 0, 0, 0);
+				
+				        imagefilledrectangle($source_image, 0, 0, 150, 30, $bgc);
+				
+				        /* Output an error message */
+				        imagestring($source_image, 1, 5, 5, 'Error loading ' . $imgname, $tc);
+				    }
+					
+					$width = imagesx($source_image);
+					$height = imagesy($source_image);
+					/* find the "desired height" of this thumbnail, relative to the desired width  */
+					$desired_height = floor($height*($desired_width/$width));
+					/* create a new, "virtual" image */
+					$virtual_image = imagecreatetruecolor($desired_width,$desired_height);
+					/* copy source image at a resized size */
+					imagecopyresized($virtual_image,$source_image,0,0,0,0,$desired_width,$desired_height,$width,$height);
+					/* create the physical thumbnail image to its destination */
+					imagejpeg($virtual_image,$dest);
+				}
+				
+				/* function:  returns files from dir */
+				function get_files($images_dir,$exts = array('jpg')) {
+					$files = array();
+					if($handle = opendir($images_dir)) {
+						while(false !== ($file = readdir($handle))) {
+							$extension = strtolower(get_file_extension($file));
+							if($extension && in_array($extension,$exts)) {
+								$files[] = $file;
+							}
+						}
+						closedir($handle);
+					}
+					return $files;
+				}
+				
+				/* function:  returns a file's extension */
+				function get_file_extension($file_name) {
+					return substr(strrchr($file_name,'.'),1);
+				}
+				
+				?>

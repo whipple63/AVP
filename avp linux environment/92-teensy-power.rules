@@ -1,0 +1,24 @@
+# ACTION=="add", ATTRS{idProduct}=="0483", ATTRS{idVendor}=="16c0", ATTRS{manufacturer}=="Teensyduino, SYMLINK+="power_mon"
+# UDEV Rules for Teensy boards, http://www.pjrc.com/teensy/
+#
+# The latest version of this file may be found at:
+#   http://www.pjrc.com/teensy/49-teensy.rules
+#
+# This file must be placed at:
+#
+# /etc/udev/rules.d/49-teensy.rules    (preferred location)
+#   or
+# /lib/udev/rules.d/49-teensy.rules    (req'd on some broken systems)
+#
+# To install, type this command in a terminal:
+#   sudo cp 49-teensy.rules /etc/udev/rules.d/49-teensy.rules
+#
+# Or use the alternate way (from this forum message) to download and install:
+#   https://forum.pjrc.com/threads/45595?p=150445&viewfull=1#post150445
+#
+# After this file is installed, physically unplug and reconnect Teensy.
+#
+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1"
+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789A]?", ENV{MTP_NO_PROBE}="1"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789ABCD]?", OWNER:="avp"
+KERNEL=="ttyACM*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", OWNER:="avp",SYMLINK+="teensy"

@@ -1,0 +1,132 @@
+package edu.unc.ims.instruments.wind.young32500;
+
+import edu.unc.ims.instruments.wind.WindData;
+import edu.unc.ims.instruments.wind.WindListener;
+import edu.unc.ims.instruments.wind.young32500.Young32500;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+
+/**
+Simple command-line application for testing the Young32500.
+Test the Young32500 class.  Goes into a command loop and lets user interactively
+control the compass.
+*/
+public class Young32500Console implements WindListener {
+    /**
+    Young32500Console.
+    @throws Exception all
+    */
+    protected Young32500Console() throws Exception {
+        Young32500 y = new Young32500("eddy.ims.unc.edu", 55233);
+        y.addListener(this);
+        BufferedReader br = new BufferedReader(new InputStreamReader(
+            System.in));
+        printCommands();
+        PrintStream ps = new PrintStream(System.out, true);
+        for (;;) {
+            String l = br.readLine();
+            if (l.equals("start")) {
+                y.startSampling();
+            } else if (l.equals("connect")) {
+                ps.println("connecting...");
+                y.connect();
+                ps.println("connected");
+            } else if (l.equals("disconnect")) {
+                ps.println("disconnecting...");
+                y.disconnect();
+                ps.println("disconnected");
+            } else if (l.equals("stop")) {
+                ps.println("stopping...");
+                y.stopSampling();
+                ps.println("stopped");
+            } else if (l.startsWith("rate")) {
+                String [] fields = l.split(" ");
+                if (fields.length != 2) {
+                    continue;
+                }
+                Young32500.OutputRate r = Young32500.OutputRate.RATE_2;
+                if (fields[1].equals(".1")) {
+                    r = Young32500.OutputRate.RATE_0_1;
+                } else if (fields[1].equals("2")) {
+                    r = Young32500.OutputRate.RATE_2;
+                } else if (fields[1].equals("15")) {
+                    r = Young32500.OutputRate.RATE_15;
+                } else {
+                    System.out.println("Invalid rate: .1, 2, 15");
+                    continue;
+                }
+                ps.println("setting rate...");
+                y.setOutputRate(r);
+                ps.println("rate set");
+            } else if (l.startsWith("damp")) {
+                String [] fields = l.split(" ");
+                if (fields.length != 2) {
+                    continue;
+                }
+                Young32500.Damping r = Young32500.Damping.DAMPING_SLOW;
+                if (fields[1].equals("none")) {
+                    r = Young32500.Damping.DAMPING_NONE;
+                } else if (fields[1].equals("slow")) {
+                    r = Young32500.Damping.DAMPING_SLOW;
+                } else if (fields[1].equals("fast")) {
+                    r = Young32500.Damping.DAMPING_FAST;
+                } else {
+                    System.out.println("Invalid speed: none, slow, fast");
+                    continue;
+                }
+                ps.println("setting damping...");
+                y.setDamping(r);
+                ps.println("damping set");
+            } else if (l.startsWith("x")) {
+                break;
+            } else {
+                printCommands();
+            }
+        }
+        ps.println("disconnecting...");
+        y.disconnect();
+        ps.println("disconnected");
+    }
+
+    /**
+    Called when a measurement is made.
+    @param  d   the data.
+    */
+    public final void onMeasurement(final WindData d) {
+        System.out.println(
+            d.getCompassDirection() + "\t"
+            + d.getWindDirection() + "\t"
+            + d.getUncorrectedWindDirection() + "\t"
+            + d.getWindSpeed() + "\t"
+            + d.getVin1() + "\t"
+            + d.getVin2() + "\t"
+            + d.getVin3() + "\t"
+            + d.getVin4());
+    }
+
+    /**
+    Main method for testing.
+
+    @param  args    stuff
+
+    @throws Exception   on error
+    */
+    public static void main(final String [] args) throws Exception {
+        new Young32500Console();
+    }
+
+    /**
+    Prints usage.
+    */
+    public static void printCommands() {
+        System.out.println("Commands:");
+        System.out.println("connect                Establish connection");
+        System.out.println("disconnect             Close connection");
+        System.out.println("start                  Start data collection");
+        System.out.println("stop                   Stop data collection");
+        System.out.println("rate [.1,2,15]         Set output rate (Hz)");
+        System.out.println("damp [none,slow,fast]  Set compass damping");
+        System.out.flush();
+    }
+}

@@ -1,0 +1,65 @@
+<project name="json" default="all" basedir=".">
+
+<property environment="env"/>
+<property name="build.dir" value="build"/>
+<property name="classes.dir" value="${build.dir}/classes"/>
+<property name="src.dir" value="src"/>
+<property name="lib.dir" value="${build.dir}/lib"/>
+<property name="distrib.lib.dir" value="lib"/>
+<property name="debug" value="true"/>
+<property name="deprecation" value="false"/>
+<property name="ver.h" value="1"/>
+<property name="ver.l" value="0"/>
+<property name="jar.file.path" value="${lib.dir}/json-${ver.h}.${ver.l}.jar"/>
+<property name="doc.dir" value="doc/javadoc"/>
+<property name="executable-full-path" location="bin/publish.sh"/>
+
+<target name="setenv" description="Sets the build environment (internal)">
+	<mkdir dir="${build.dir}"/>
+	<mkdir dir="${classes.dir}"/>
+	<mkdir dir="${lib.dir}"/>
+	<path id="classpath">
+		<fileset dir="${distrib.lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+</target>
+
+<target name="compile" depends="setenv" description="Compiles all the code">
+	<javac 
+		srcdir="${src.dir}"
+		destdir="${classes.dir}"
+		includes="org/**/*.java"
+		classpathref="classpath"
+		debug="${debug}"
+		verbose="false"
+		includeAntRuntime="false"
+		deprecation="${deprecation}">
+		<compilerarg value="-Xlint:unchecked"/>
+		<compilerarg value="-Xlint:deprecation"/>
+	</javac>
+</target>
+
+<target name="jar" depends="compile" description="Compiles code and builds a jar file">
+	<jar jarfile="${jar.file.path}" basedir="${classes.dir}" >
+		<include name="**"/>
+	</jar>
+</target>
+
+<target name="clean" description="Cleans the build">
+	<delete quiet="true" dir="${build.dir}"/>
+	<delete quiet="true" dir="${doc.dir}"/>
+</target>
+
+<target name="doc" description="Generates source code documentation, load doc/javadoc/index.html into your browser">
+	<javadoc destdir="${doc.dir}" verbose="false">
+		<packageset dir="${src.dir}" defaultexcludes="yes">
+			<include name="org/**"/>
+		</packageset>
+	</javadoc>
+</target>
+
+<target name="all" depends="jar" description="Compiles and builds jar file">
+</target>
+
+</project>

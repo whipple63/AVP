@@ -1,0 +1,264 @@
+<project name="javp" default="all" basedir=".">
+
+<property environment="env"/>
+<property name="build.dir" value="build"/>
+<property name="classes.dir" value="${build.dir}/classes"/>
+<property name="src.dir" value="src/main/java"/>
+<property name="lib.dir" value="${build.dir}/lib"/>
+<property name="distrib.lib.dir" value="lib"/>
+<property name="debug" value="true"/>
+<property name="deprecation" value="false"/>
+<loadfile srcfile="RELEASE" property="ver"/>
+<property name="jar.file.path" value="${lib.dir}/javp-${ver}.jar"/>
+<property name="doc.dir" value="doc/javadoc"/>
+<property name="executable-full-path" location="bin/publish.sh"/>
+
+
+<!--taskdef resource="checkstyletask.properties">
+    <classpath>
+        <fileset dir="${env.CHECKSTYLE_LOC}">
+            <include name="checkstyle*all.jar"/>
+        </fileset>
+    </classpath>
+</taskdef-->
+
+<target name="setenv" description="Sets the build environment (internal)">
+	<mkdir dir="${build.dir}"/>
+	<mkdir dir="${classes.dir}"/>
+	<mkdir dir="${lib.dir}"/>
+	<path id="classpath">
+		<fileset dir="${distrib.lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+</target>
+
+<target name="compile" depends="setenv" description="Compiles all the code">
+	<javac 
+		srcdir="${src.dir}"
+		destdir="${classes.dir}"
+		includes="edu/**/*.java"
+		classpathref="classpath"
+		debug="${debug}"
+		verbose="false"
+		includeAntRuntime="false"
+		deprecation="${deprecation}">
+		<compilerarg value="-Xlint:unchecked"/>
+		<compilerarg value="-Xlint:deprecation"/>
+	</javac>
+</target>
+
+<target name="jar" depends="compile" description="Compiles code and builds a jar file">
+	<jar jarfile="${jar.file.path}" basedir="${classes.dir}" >
+		<include name="**"/>
+	</jar>
+</target>
+
+<target name="clean" description="Cleans the build">
+	<delete quiet="true" dir="${build.dir}"/>
+	<delete quiet="true" dir="${doc.dir}"/>
+</target>
+
+<!--target name="doc" description="Generates source code documentation, load doc/javadoc/index.html into your browser">
+	<javadoc destdir="${doc.dir}" verbose="false">
+		<packageset dir="${src.dir}" defaultexcludes="yes">
+			<include name="edu/**"/>
+		</packageset>
+		<packageset dir="../json/src" defaultexcludes="yes">
+			<include name="org/**"/>
+		</packageset>
+	</javadoc>
+</target-->
+
+<target name="all" depends="jar" description="Compiles and builds jar file">
+</target>
+
+<target name="run_test" depends="jar" description="Compiles, creates the jar and runs the AccessIO broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.Test">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+	</java>
+</target>
+
+<target name="run_aio_broker" depends="jar" description="Compiles, creates the jar and runs the AccessIO broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/aio.conf"/>
+	</java>
+</target>
+
+<target name="run_io_broker" depends="jar" description="Compiles, creates the jar and runs the generalized IO broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/io.conf"/>
+	</java>
+</target>
+
+<target name="run_sonde_broker" depends="jar" description="Compiles, creates the jar and runs the sonde broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/ysi_sonde.conf"/>
+	</java>
+</target>
+
+<target name="run_dashboard" depends="jar" description="Compiles, creates the jar and runs the dashboard">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.dashboard.Dashboard">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/dashboard.conf"/>
+	</java>
+</target>
+<target name="run_wind_broker" depends="jar" description="Compiles, creates the jar and runs the wind broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/y32500.conf"/>
+	</java>
+</target>
+
+<target name="run_sounder_broker" depends="jar" description="Compiles, creates the jar and runs the sounder broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/sounder.conf"/>
+	</java>
+</target>
+<target name="run_mm3_broker" depends="jar" description="Compiles, creates the jar and runs the MM3 broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/mm3.conf"/>
+	</java>
+</target>
+<target name="run_gps_broker" depends="jar" description="Compiles, creates the jar and runs the gps broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/gpsd.conf"/>
+	</java>
+</target>
+<target name="run_isco_broker" depends="jar" description="Compiles, creates the jar and runs the isco broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/isco.conf"/>
+	</java>
+</target>
+<target name="run_lisst_broker" depends="jar" description="Compiles, creates the jar and runs the lisst broker">
+	<java fork="true" spawn="false" classname="edu.unc.ims.avp.Broker">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+		<arg value="lib/db.conf"/>
+		<arg value="lib/lisst.conf"/>
+	</java>
+</target>
+<target name="run_sounder_sim" depends="jar" description="Compiles, creates the jar and runs the Sounder Simulator">
+        <java fork="true" spawn="false" classname="edu.unc.ims.util.SounderSim">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+	</java>
+</target>
+
+<target name="run_mm3_sim" depends="jar" description="Compiles, creates the jar and runs the MM3 Simulator">
+        <java fork="true" spawn="false" classname="edu.unc.ims.util.MM3Sim">
+		<classpath>
+			<pathelement location="${jar.file.path}"/>
+			<pathelement location="${env.CLASSPATH}"/>
+			<fileset dir="${distrib.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+	</java>
+</target>
+
+
+<!--target name="publish" depends="clean,jar,doc" description="Creates a binary package for distribution">
+    <exec executable="${executable-full-path}">
+        <arg value="${jar.file.path}"/>
+        <arg value="${ver}"/>
+    </exec>
+</target-->
+<target name="publish" depends="clean,jar" description="Creates a binary package for distribution">
+    <exec executable="${executable-full-path}">
+        <arg value="${jar.file.path}"/>
+        <arg value="${ver}"/>
+    </exec>
+</target>
+
+<!--checkstyle config="${env.CHECKSTYLE_LOC}/sun_checks.xml"
+    failOnViolation="false">
+	<fileset dir="src" includes="**/*.java"/>
+</checkstyle-->
+</project>

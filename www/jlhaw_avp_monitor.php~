@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Jordan Lake Observatory</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel='dns-prefetch' href='//its2.unc.edu' />
+	<link rel='dns-prefetch' href='//s.w.org' />	
+
+	<link rel="stylesheet" href="http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/css/main.min.css?ver=259fc31ac0ece324d8c3a19fc0aa5463">
+
+	<style id='roots_main-inline-css' type='text/css'>	
+		body{
+		background-color:#ffffff;
+		background-image: url();
+		background-attachment: fixed;
+		background-size: cover;
+		}
+		.abovefold {
+		background-color:#ffffff;
+		background-image: url();
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		width: 100%;
+		}
+		.abovefold a{color:#505962;}
+	</style>
+	
+	<link rel="stylesheet" href="http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium-web/style.css">
+
+	<script type='text/javascript' src='https://alertcarolina.unc.edu/scripts/webalert.js'></script>
+	<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+	<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+	<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/js/vendor/modernizr-2.7.0.min.js'></script>
+	
+	<link rel='https://api.w.org/' href='http://jordanlakeobservatory.unc.edu/wp-json/' />
+	<link rel="alternate" type="application/json+oembed" href="http://jordanlakeobservatory.unc.edu/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fjordanlakeobservatory.unc.edu%2F" />
+	<link rel="alternate" type="text/xml+oembed" href="http://jordanlakeobservatory.unc.edu/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fjordanlakeobservatory.unc.edu%2F&#038;format=xml" />
+
+	<style>
+	#wp-admin-bar-asu_support_enabled {
+		background-color: #E00000!important;
+	}
+	</style>
+	
+	<script type="text/javascript" id="unc-ub-script" data-color="" src="https://its.unc.edu/web-assets/utility-bar/utility-bar.min.js"></script>
+	                
+	<style type="text/css">
+	   .single #feat-img-h, article.media #feat-img-h {}
+	   .abovefold-container .search-form {}
+	</style>
+
+	<style type="text/css">
+     .bg-primary, .btn-primary, .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus, .label-primary, .btn-primary, .nav-tabs li a:hover, footer.content-info .widget ul li a:hover {
+         background-color: ;
+     }
+     .panel-primary {
+         border-color: ;
+     }
+     .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active, .progress-bar, .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus, a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus, .panel-primary>.panel-heading {
+         background-color:;
+         border-color:;
+     }
+     .navbar-default {
+         background-color:;
+         border-color:;
+     }
+     a, .text-primary, .btn-primary .badge, .btn-link, .pagination>li>a, .pagination>li>span, a.list-group-item.active>.badge, .nav-pills>.active>a>.badge, .navbar-inverse .navbar-brand, .navbar-inverse .caret, .header-logo a:hover, .brand-logo a:hover, footer .widget ul>li:last-child a, footer ol.vcalendar li a, footer .widget ul li a, footer .widget ul li a:link, .widget ul li a:hover, .widget ul.dropdown-menu li.active a:hover, footer.content-info a:hover, footer.content-info a {
+         color:;
+     }
+     .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+         border-top-color: ;
+         border-right-color-value: ;
+         border-bottom-color: ;
+         border-left-color-value: ;
+     }
+     footer .widget ul>li a:hover, footer .widget ul>li:last-child a:hover {
+     		color: #fff;
+     }
+     .btn-primary:hover {
+         background-color:;
+     }
+     .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li.active > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+         background-color:;
+     }
+     .navbar-default .navbar-toggle {
+         border-color: ;
+     }
+     a:hover, a:focus, footer.content-info a:hover {
+         color: ;
+     }
+	</style>
+    
+	<link rel="canonical" href="http://jordanlakeobservatory.unc.edu/">
+
+
+	<!-- Local scripts -->
+	<!-- Local scripts -->
+	<!-- Local scripts -->
+	<!-- Local scripts -->
+	<!-- Local scripts -->
+	<!-- Local scripts -->
+<!--	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<link href="css/vader/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+	
+	<script>
+		var imgfolder = "jlhaw/";
+		var fnprefix = "AVP3_";
+		var firstData = new Date(2017, 5 -1, 17);
+		//var lastData = new Date(2017, 7 -1, 26); // removing to allow new deployment
+	</script>
+
+	<script src="avpdata.js"></script>
+	<!-- End Local scripts -->
+	<!-- End Local scripts -->
+	<!-- End Local scripts -->
+	<!-- End Local scripts -->
+	<!-- End Local scripts -->
+	<!-- End Local scripts -->
+
+
+
+	
+	<!-- Begin Custom CSS -->
+	<!-- Begin Custom CSS -->
+	<!-- Begin Custom CSS -->
+	<!-- Begin Custom CSS -->
+	<!-- Begin Custom CSS -->
+	<link rel="stylesheet" href="avpweb.css">
+
+	<style type="text/css">
+	</style>	<!-- End Custom CSS -->
+				<!-- End Custom CSS -->
+				<!-- End Custom CSS -->
+				<!-- End Custom CSS -->
+				<!-- End Custom CSS -->
+				<!-- End Custom CSS -->
+
+				
+   <link rel="alternate" type="application/rss+xml" title="Jordan Lake Observatory Feed" href="http://jordanlakeobservatory.unc.edu/feed/">
+
+   <!-- Favicon -->
+   <link rel="shortcut icon" href="http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/img/ss_img_unc_favicon.ico" />
+
+</head>
+
+
+<body class="home page" onload="on_page_load()">
+
+<!--[if lt IE 8]>
+<div class="alert alert-warning">
+    You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+<div class="container-fluid">
+    <div class="row">
+		<div id="abovefold" class="abovefold">
+    		<div class="abovefold-container container">
+         	<div class="row">
+            	<div class="col-sm-8">
+               	<div class="header-logo">
+                  	<a class="brand" href=" http://jordanlakeobservatory.unc.edu ">Jordan Lake Observatory</a>
+                  </div>
+               </div>
+               
+               <div class="col-sm-4">
+               	<form role="search" method="get" class="search-form form-inline" action="http://jordanlakeobservatory.unc.edu/">
+  						<div class="input-group" >
+    						<label class="hide" for="search">Search_for:</label>
+    						<input type="search" id="search" value="" name="s" class="search-field form-control" placeholder="Search this site...">
+						   <span class="input-group-btn">
+						     <button aria-labelledby="&#9906" id="Submit" class="search-submit btn btn-default">
+						     &#9906
+						     <span id="header-search" class="hidden">Submit Search</span>
+						     </button>
+						   </span>
+  						</div>
+						</form>
+					</div>
+        		</div>
+    		</div>
+		</div>
+
+
+		<header id="nav" class="dualheader banner navbar navbar-default navbar-static-top " role="banner">
+	   <div class="navbar-container container">
+      	<div class="">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+             <span class="sr-only">Toggle navigation</span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </button>
+	      <a class="navbar-brand" href="http://jordanlakeobservatory.unc.edu/">Jordan Lake Observatory</a>
+	      </div>
+	      
+        	<div class="row">
+         <nav class="collapse navbar-collapse" role="navigation">
+	         <ul id="menu-primary-navigation" class="nav navbar-nav">
+	         <li class="active menu-home"><a href="http://jordanlakeobservatory.unc.edu/">Home</a></li>
+				<li class="menu-water-quality-monitoring"><a href="http://jordanlakeobservatory.unc.edu/water-quality-monitoring/">Water Quality Monitoring</a></li>
+				<li class="dropdown menu-vertical-profiler-data"><a class="dropdown-toggle disabled" data-target="#" href="http://eddy.ims.unc.edu">Vertical Profiler Data<b class="fa caret-dropdown"></b></a>
+					<ul class="dropdown-menu">
+						<li class="menu-white-oak"><a href="http://eddy.ims.unc.edu/jlwhiteoak_avp_monitor.php">White Oak</a></li>
+						<li class="menu-new-hope"><a href="http://eddy.ims.unc.edu/jlnewhope_avp_monitor.php">New Hope</a></li>
+						<li class="menu-haw-river"><a href="http://eddy.ims.unc.edu/jlhaw_avp_monitor.php">Haw River</a></li>
+					</ul>
+				</li>
+				<li class="dropdown menu-camera-images"><a class="dropdown-toggle disabled" data-target="#" href="http://eddy.ims.unc.edu/jlwhiteoak_photogal.php">Camera Images<b class="fa caret-dropdown"></b></a>
+				<ul class="dropdown-menu">
+					<li class="menu-white-oak"><a href="http://eddy.ims.unc.edu/jlwhiteoak_photogal.php">White Oak</a></li>
+					<li class="menu-white-oak"><a href="http://eddy.ims.unc.edu/jlhaw_photogal.php">Haw</a></li>
+				</ul>
+				</li>
+				</ul>
+         </nav>
+		   </div>
+		   
+		</div>
+		</header>
+    </div>
+    
+    <div class="row">
+    </div>
+
+    <div class="wrap row" role="document">
+    	<div class="content container">
+      	<div class="row ">
+         	<main class="main col-sm-9 col-sm-push-3" role="main">
+            	<div class="page-header">
+	        			<h1>
+	            	Haw Profiler Data
+	            	</h1>
+    				</div>
+    				
+				<!-- .main -->
+				<!-- .main -->
+				<!-- .main -->
+				<!-- .main -->
+				<!-- .main -->
+
+
+	<p>
+<!--	<a href="AVP Locations.jpg"> -->
+	<figure style="border:1px solid lightgray;">
+		<img usemap="#avpmap" src="AVP Locations.jpg" style="width: 100%; max-width: 800px; height: auto;"/>
+			<map name="avpmap">
+				<area shape="rect" coords="333,234,465,278" href="jlwhiteoak_avp_monitor.php" alt="White Oak" title="White Oak">
+				<area shape="rect" coords="454,120,586,165" href="jlnewhope_avp_monitor.php" alt="New Hope" title="New Hope">
+				<area shape="rect" coords="177,330,310,376" href="jlhaw_avp_monitor.php" alt="Haw" title="Haw">
+			</map>
+			<script src="image-map.js"></script>
+			<script type="text/javascript" >
+				ImageMap('img[usemap]');
+			</script>
+			<figcaption>Clickable map showing vertical profiler locations</figcaption>
+	</figure>
+<!--	</a> -->
+	</p>	
+	
+	<h3><b><u><font color="red">NOTE:</u></b> Data for the Haw River are available from 17-May-2017 to 26-Jul-2017
+	 and again beginning 11-Apr-2018</font></h3>	
+	
+	<div id="data"><h3>Most Recent Observations</h3></div>
+	
+	<div id="profile_cal" ><h3>Select Date for Profile Graph</h3></div>
+	
+	<div id="profile_img">
+		<figure style="border:1px solid lightgray;">
+			<img id="profiles">
+			<figcaption style="font-size: 1.2em; text-align: center;">
+				Image showing data from the selected and prior day.  Wind barbs point in the direction
+				to which the wind is blowing.
+			</figcaption>
+		</figure>
+	</div>
+	<p id="img_status"></p>
+
+	<p style="clear: left"><i><b>Refresh the page for updated data.</b></i></p>
+	
+	<div id="afterImage">
+		<p>
+		The Autonomous Vertical Profilers (AVPs) use a YSI Multi-Parameter Sonde to measure water temperature, 
+		salinity, pH, dissolved oxygen concentration, chlorophyll concentration, and turbidity from surface to bottom every
+		30 minutes.  There is also an anemometer for wind speed and direction, and a consumer-grade depth sounder
+		reporting water depth and surface temperature.</p>
+		<h2><a href="jlwhiteoak_avp_monitor.php">White Oak</a> --- <a href="jlnewhope_avp_monitor.php">New Hope</a> --- <a href="jlhaw_avp_monitor.php">Haw River</a></h2>
+		
+		<div id="pic"><img id="avp_image" src="Haw AVP Small.jpg"></div>
+		
+		<div id="header">
+		<h2>Haw River Profiler - Recent Conditions</h2>
+		<p>This page shows data acquired from the station located in the Haw River section of B. Everett Jordan Reservoir.    
+		Data are available in real-time upon collection.  Wind and depth are averages taken every ten minutes.  Profile images 
+		are updated every 30 minutes and can be reviewed by date using the calendar above.  <i>Profiler graphics are always in 
+		EST whereas the data in the table follows local time.</i>
+		</p>
+		
+		<p>Here are some links to some USGS discharge data for above and below Jordan Lake:</p>
+		<ul>
+		<li><a href="https://waterdata.usgs.gov/nwis/uv?02096960">Haw River near Bynum, NC</a></li>
+		<li><a href="https://waterdata.usgs.gov/usa/nwis/uv?02098206">Haw River near Moncure, NC (Below the dam)</a></li>
+		<li><a href="https://waterdata.usgs.gov/nwis/uv?site_no=0209782609">White Oak Cr at mouth near Green Level, NC</a></li>
+		<li><a href="https://waterdata.usgs.gov/nwis/uv?site_no=0209741955">Northeast Cr near Genlee, NC</a></li>
+		<li><a href="https://waterdata.usgs.gov/usa/nwis/uv?site_no=02097314">New Hope Cr near Blands, NC</a></li>
+		<li><a href="https://waterdata.usgs.gov/nwis/uv?site_no=02097517">Morgan Cr near Chapel Hill, NC</a></li>
+		</ul>
+		</div>
+	</div>
+		
+	<?php
+		$dbname="jlhaw";	
+		include 'avpdata.php';
+	?>
+	
+		
+         </main>	<!-- /.main -->
+						<!-- /.main -->            
+						<!-- /.main -->            
+						<!-- /.main -->            
+						<!-- /.main -->            
+						<!-- /.main -->            
+
+            
+            <aside class="sidebar col-sm-3 col-sm-pull-9" role="complementary">
+            	<section class="widget archives-3 widget_archive">
+            		<h3>Archives</h3>
+            			<ul>
+							</ul>
+					</section>
+				</aside><!-- /.sidebar -->
+        </div>
+      </div><!-- /.content -->
+    </div><!-- /.wrap -->
+    
+    
+    <div class="row">
+    </div>
+
+    <div class="row">
+    	<footer class="content-info" role="contentinfo">
+  			<div class="footer-container container">
+	  			<div class="row">
+					<section class="widget text-2 widget_text col-md-4 col-sm-6">	
+						<div class="textwidget"></div>
+					</section>		
+	  			</div>
+  			</div>
+  			<div id="copyright">
+         	<p class="copyright">&copy; 2018 Jordan Lake Observatory</p>
+        	</div>
+		</footer>
+		
+		<link rel="stylesheet" href="http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/css/nav.min.css?ver=4.7.9">																																
+		<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/js/parallax.js?ver=1.0'></script>
+		<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-content/themes/heelium/assets/js/scripts.min.js?ver=6317b63d0a03d9e1b3e09708ec3fff72'></script>
+		<script type='text/javascript' src='http://jordanlakeobservatory.unc.edu/wp-includes/js/wp-embed.min.js?ver=4.7.9'></script>
+		<script type='text/javascript' src='https://jordanlakeobservatory.web.unc.edu/wp-content/themes/heelium/assets/js/nav.min.js?ver=4.9.5'></script>
+     	<script> 
+     		jQuery('.modal').on('hidden.bs.modal', function (e) {
+       		jQuery('.modal iframe').attr("src", jQuery(".modal  iframe").attr("src"));
+     		});
+     	</script>
+    </div>
+</div>
+
+</body>
+</html>

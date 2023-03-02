@@ -1,0 +1,1 @@
+python /data/langmuir/python/AVPCamera/avpcamera/sched_lc.py 2>&1 | tee -a /data/langmuir/log/cam.log &

@@ -1,0 +1,10 @@
+#!/bin/bash
+# Get the weather and put it on the Pertelian
+
+# First, get the weather feed
+wget http://www.weather.gov/alerts/wwarssget.php\?zone=ILZ014 -O /tmp/cookalerts.rss -o /tmp/getweather.log
+wget http://www.weather.gov/data/current_obs/KORD.xml -O /tmp/KORD.xml -o /tmp/getweather.log
+
+# Next, parse the feed and put the message into the Pertailan area
+./getalert.pl > /tmp/pertd/line3
+./getweather.pl > /tmp/pertd/line4

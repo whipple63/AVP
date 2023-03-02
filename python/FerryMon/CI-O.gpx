@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<gpx version="1.1" creator="OpenCPN" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" xmlns:opencpn="http://www.opencpn.org">
+  <rte>
+    <extensions>
+      <opencpn:guid>6f98ffff-91e9-4f35-96c9-0cce6305ffff</opencpn:guid>
+      <opencpn:viz>1</opencpn:viz>
+      <opencpn:planned_speed>9.00</opencpn:planned_speed>
+      <opencpn:time_display>PC</opencpn:time_display>
+    </extensions>
+    <rtept lat="35.019900027" lon="-76.310518984">
+      <time>2019-02-12T14:00:30Z</time>
+      <name>001</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>5ba3ffff-1e14-4610-95bc-480052beffff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.155270087" lon="-76.161582589">
+      <time>2019-02-12T14:00:44Z</time>
+      <name>002</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>42f9ffff-8aa3-47bc-b6be-cf9b700fffff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.170779615" lon="-76.119282246">
+      <time>2019-02-12T14:01:18Z</time>
+      <name>003</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>382b0000-50ca-4901-ac6e-63dc6bfbffff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.161892383" lon="-76.016403970">
+      <time>2019-02-12T14:01:56Z</time>
+      <name>004</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>7d11ffff-3208-4181-b652-5d3848a3ffff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.153001274" lon="-76.011495105">
+      <time>2019-02-12T14:02:21Z</time>
+      <name>005</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>53cdffff-c06f-4865-8859-75b4734fffff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.149025593" lon="-76.010236602">
+      <time>2019-02-12T14:02:25Z</time>
+      <name>006</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>68aaffff-33aa-44b1-8bc3-047a20da0000</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.145143270" lon="-76.007090342">
+      <time>2019-02-12T14:02:30Z</time>
+      <name>007</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>6b48ffff-daab-4d20-a40e-867d569affff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.141775322" lon="-76.004630540">
+      <time>2019-02-12T14:02:36Z</time>
+      <name>008</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>02400000-b027-4cfd-b9a0-804744f7ffff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.134384058" lon="-76.003772469">
+      <time>2019-02-12T14:02:38Z</time>
+      <name>009</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>03d40000-73d6-4f25-ad2e-8c1536ee0000</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.127179270" lon="-76.001941918">
+      <time>2019-02-12T14:02:58Z</time>
+      <name>010</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>29030000-0df4-4240-8896-a3c95cbbffff</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.109398493" lon="-75.992102707">
+      <time>2019-02-12T14:03:10Z</time>
+      <name>011</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>50d1ffff-47e4-49b0-b3fd-7f3a0b1c0000</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.114592730" lon="-75.989759981">
+      <time>2019-02-12T14:03:20Z</time>
+      <name>012</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>6caeffff-e567-473a-bc24-c8f11f010000</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.114241819" lon="-75.986528294">
+      <time>2019-02-12T14:03:23Z</time>
+      <name>013</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>0c5f0000-3222-4314-abca-e9e931a00000</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+    <rtept lat="35.115271156" lon="-75.986471096">
+      <time>2019-02-12T14:03:25Z</time>
+      <name>014</name>
+      <sym>diamond</sym>
+      <type>WPT</type>
+      <extensions>
+        <opencpn:guid>215b0000-d0cf-4469-a52b-812516430000</opencpn:guid>
+        <opencpn:auto_name>1</opencpn:auto_name>
+        <opencpn:arrival_radius>0.050</opencpn:arrival_radius>
+      </extensions>
+    </rtept>
+  </rte>
+</gpx>

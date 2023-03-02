@@ -1,0 +1,18 @@
+
+1.3 
+	added logging to sd card for ethernet ports and serial
+	improved uptime command to handle millis() rollover events and report in ms
+	amps_limit will now allow button press moves to continue at max amps until speed is reduced by 50%
+	added sanity check on position received from motor controller since, on rare occasions the motor controller
+		will reset the register to max negative integer (most significant bit set).  If this happens on start-up
+		we set current position to zero.
+	added tcp code to disconnect port if the other side goes down
+
+1.2
+	major internal software rewrite as class objects
+
+1.1
+	button presses now increment through several steps from slow to full speed
+	added uptime command
+	
+1.0 

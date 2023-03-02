@@ -1,0 +1,169 @@
+<html>
+<head>
+<title>Configuring and Running javp Instrument Brokers (0.1)</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Configuring and Running javp Instrument Brokers</h1>
+<i>Version 0.1, December 10, 2010</i>
+<h2>Contents</h2>
+<a href="#intro">Introduction</a><br>
+<a href="#installation">Installation</a><br>
+<a href="#configuration">Configuration</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#shared_configuration">Shared Configuration</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#y32500_configuration">Young 32500 Configuration</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sonde_configuration">YSI Sonde Configuration</a><br>
+<a href="#operation">Broker Operation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#shared_operation">Shared Operation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#y32500_operation">Young 32500 Compass/Wind Operation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#sonde_operation">YSI Sonde Operation</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testing">Testing</a><br>
+
+<a name="intro"/>
+<h2>Introduction</h2>
+This document describes the javp instrument brokers and how to use them.  
+
+<a name="installation"/>
+<h2>Installation</h2>
+To install, simply uncompress the javp-0.1.tar.gz file to a desired location
+You may run the brokers from the bin directory or add the bin directory to your path.
+
+<a name="configuration"/>
+<h2>Configuration</h2>
+
+<a name="shared_configuration"/>
+<h3>Shared Configuration</h3>
+All brokers read one or more configuration files at startup.  The configuration files use the standard  <a href="http://download.oracle.com/javase/6/docs/api/java/util/Properties.html#load(java.io.Reader)">java properties file format</a>.  
+Generally, a variable may be set by giving the variable name starting in the first column followed by
+whitespace followed by the value.  Any line that starts with # is a comment.
+Default configuration files are included in the bin directory, e.g. y32500.conf, and are hard-coded into the broker scripts, e.g. y32500_broker.
+<p>
+The following variables are shared by <b>all</b> brokers.  Instrument-specific
+variables are documented in their respective sections of this document.  Note
+that all brokers accept incoming TCP connections on a control port.
+<p>
+<table border="1">
+<caption><em>Shared Broker Configuration Variables</em></caption>
+<tr><th>Variable<th>Description<th>Default
+<tr><td><b>log_level</b><td>Log message resolution (see table below for possible values).  All messages with equal or higher priority as this value will be logged<td>CRIT
+<tr><td><b>log_file</b><td>Name of a file for log messages<td>"-" (stderr)
+<tr><td><b>adapter_class</b><td>The java class name for the implementation of this class<td>None
+</table>
+<p>
+<table border="1">
+<caption><em>Valid log_level Settings</em></caption>
+<tr><th>Level<th>Description
+<tr><td>EMERG<td>Emergencies - system is unusable.
+<tr><td>ALERT<td>Action must be taken immediately.
+<tr><td>CRIT<td>Critical Conditions.
+<tr><td>ERROR<td>Error conditions.
+<tr><td>WARN<td>Warning conditions.
+<tr><td>NOTICE<td>Normal but significant condition.
+<tr><td>INFO<td>Informational.
+<tr><td>DEBUG<td>Debug-level messages
+</table>
+
+<a name="y32500_configuration"/>
+<h3>Young 32500 Compass/Wind Instrument</h3>
+This section describes configuration for the Young 32500.  In addition to the
+shared configuration variables <a href="#configuration">described here</a>, 
+the following variables are supported:
+<p>
+<table border="1">
+<caption><em>Young 32500 Configuration Variables</em></caption>
+<tr><th>Variable<th>Description<th>Default
+<tr><td><b>host</b><td>The hostname for the Young 32500<td>localhost
+<tr><td><b>port</b><td>The port number for the Young 32500<td>55233
+<tr><td><b>output_rate</b><td>The output data rate, should be one of 0.1, 2, or 15 (all Hz)<td>2
+<tr><td><b>adapter_class</b><td>The java class name for the implementation 
+of this class (typically shouldn't change)<td>edu.unc.ims.avp.adapters.Young32500Adapter
+</table>
+<p>
+Here is an example configuration file:
+<pre>
+log_level   DEBUG
+log_file   y32500_log
+host    eddy.ims.unc.edu
+port    55233
+ctrl_server_port 8888
+data_server_port 8889
+output_rate 2
+adapter_class   edu.unc.ims.avp.adapters.Young32500Adapter
+</pre>
+<a name="sonde_configuration"/>
+<h3>YSI Sonde Instrument</h3>
+This section describes configuration for the YSI Sonde.  In addition to the
+shared configuration variables <a href="#configuration">described here</a>, 
+the following variables are supported:
+<p>
+<table border="1">
+<caption><em>YSI Sonde Configuration Variables</em></caption>
+<tr><th>Variable<th>Description<th>Default
+<tr><td><b>host</b><td>The hostname for the Sonde<td>localhost
+<tr><td><b>port</b><td>The port number for the Sonde<td>55232
+<tr><td><b>adapter_class</b><td>The java class name for the implementation 
+of this class (typically shouldn't change)<td>edu.unc.ims.avp.adapters.Sonde6Adapter
+</table>
+<p>
+Here is an example configuration file:
+<pre>
+log_level   DEBUG
+log_file   sonde_log
+host    eddy.ims.unc.edu
+port    55232
+ctrl_server_port 8888
+data_server_port 8889
+adapter_class   edu.unc.ims.avp.adapters.Sonde6Adapter
+</pre>
+<a name="operation"/>
+<h2>Broker Operation</h2>
+<a name="shared_operation"/>
+<h3>Shared Broker Operation</h3>
+Every Broker supports a standard set of commands described below.  In addition,
+a broker may support an extended set of custom commands.
+All commands are sent over the TCP connection to the <i>ctrl_server_port</i>
+on a single line followed by CRLF.  Telnet is a useful tool for debugging.
+<p>
+<table border="1">
+<tr><td><b>connect</b><td>Connects the broker to the instrument, performs any 
+required initialization.  Broker must be disconnected to issue this 
+command.
+<tr><td><b>disconnect</b><td>Disconnects from the instrument, releases 
+resources.  Broker must be connected to issue this command.
+<tr><td><b>startCollection</b><td>Start data collection (default state at startup).  Broker must be connected to issue this command.
+<tr><td><b>stopCollection</b><td>Stop data collection.  Broker must be 
+collecting data to issue this command.
+<tr><td><b>shutdown</b><td>Gracefully shut down the broker application.  Broker
+may be in any state to issue this command.
+<tr><td><b>softReset</b><td>Attempts to reset the instrument and put it into a
+known state.  The state will be connected, but not collecting data.  Issue a 
+startCollection command to resume data collection.
+</table>
+
+<a name="y32500_operation"/>
+<h3>Young 32500 Compass/Wind Operation</h3>
+The Young 32500 supports one custom command:
+<p>
+<table border="1">
+<tr><td><b>setOutputRate &lt;rate&gt;</b><td>Set the output data rate.  The <b>rate</b> should be one of 0.1, 2, or 15 (Hz).  Broker must be connected to issue this command.
+</table>
+<a name="sonde_operation"/>
+<h3>YSI Sonde Operation</h3>
+The Sonde has no custom operations at this time.
+<a name="testing"/>
+<h3>Testing</h3>
+To test a broker, do the following:
+<ul>
+<li>Run the broker command-line application from the bin directory, e.g. y32500_broker
+<li>In a second terminal window, telnet to the port specified in the <b>data_server_port</b> setting.  In the case of the y32500_broker, you should see messages from the instrument at the default output rate of 2Hz.
+<li>In a third terminal window, telnet to the port specified in the <b>ctrl_server_port</b> setting.  You may issue any of the commands described above.  
+The broker should gracefully handle invalid state changes.  Try changing the 
+output rate to 15, notice the change in the data window, then change back to 2.
+<pre>
+setOutputRate 15
+setOutputRate 2
+</pre>
+</ul>
+
+</body>
+</html>
+

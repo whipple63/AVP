@@ -1,0 +1,2 @@
+~/bin/gpsd_broker >& ~/log/gps.log &
+

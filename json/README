@@ -1,0 +1,5 @@
+The code in this package was retrieved from http://www.JSON.org/java/index.html
+on 5/21/2010, specifically http://www.json.org/java/json.zip.
+
+To build, type 'ant'.  The jar is placed in build/lib.
+

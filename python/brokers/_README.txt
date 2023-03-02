@@ -1,0 +1,1 @@
+~/python/brokers is an attempt to separate code for the individual brokers from avp_broker. This would allow broker classes to be loaded as necessary.

@@ -1,0 +1,24 @@
+\set tablename `hostname` _env
+
+BEGIN;
+CREATE TABLE :tablename (
+    loc_code            varchar         NOT NULL,
+    sample_time         timestamptz     NOT NULL,
+    system_voltage      numeric(4,2),
+    charge_power        numeric(5,2),
+    charge_current_max  numeric(4,2),
+    charge_current      numeric(4,2),
+    charge_amp_hours    numeric(5,2),
+    load_power          numeric(5,2),
+    load_current_max    numeric(4,2),
+    load_current        numeric(4,2),
+    load_amp_hours      numeric(5,2),
+    temp_cpu            numeric(4,2),
+    temp_ambient        numeric(4,2),
+    humidity            numeric(4,2),
+    disk_free_root      numeric(4,2),
+    disk_free_data      numeric(4,2),
+    free_memory         numeric(4,2),
+    PRIMARY KEY (loc_code, sample_time)
+);
+COMMIT;

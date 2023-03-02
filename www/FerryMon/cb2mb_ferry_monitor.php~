@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<title>Cherry Branch to Minnesott Beach</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel='dns-prefetch' href='//its2.unc.edu' />
+	<link rel='dns-prefetch' href='//s.w.org' />	
+	
+	<!-- Leaflet css for mapping -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   	integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   	crossorigin=""/>
+	<!-- Leaflet javascript.  Make sure this stays AFTER Leaflet's CSS -->
+ 	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+   	integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+   	crossorigin=""></script>
+
+	<!-- Local scripts -->
+	<!-- Local scripts -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	
+	<script>
+		var mapLat = 34.955;
+		var mapLon = -76.81;
+		var mapZoom= 13;
+		
+		var imgfolder = "cherrybranch/";
+		var fnprefix = "_";
+		var firstData = new Date(2019, 6 -1, 01);
+		//var lastData = new Date(2017, 7 -1, 26); // removing to allow new deployment
+	</script>
+
+	<script src="ferrydata.js"></script>
+	<!-- End Local scripts -->
+	<!-- End Local scripts -->
+
+	
+	<!-- Begin Custom CSS -->
+	<!-- Begin Custom CSS -->
+	<link rel="stylesheet" href="ferryweb.css">
+
+	<style type="text/css">
+	</style>	<!-- End Custom CSS -->
+				<!-- End Custom CSS -->
+</head>
+
+
+<body class="home page" onload="on_page_load()">
+
+
+<div >
+
+<header>
+	<h2>Cherry Branch to Minnesott Beach</h2>
+	<i><b>FerryMon:</b></i> <a href="http://wave.ims.unc.edu/FerryMon/cb2mb_ferry_monitor.php">http://wave.ims.unc.edu/FerryMon/cb2mb_ferry_monitor.php</a> 
+	</header>
+	<hr>
+		
+	<div id="data"><h3>Most Recent Observations</h3></div>
+
+	<div id="mapid"></div>
+			
+	<div id="webcam" style="float:left">
+		<h3>Most Recent Web Cam Image</h3>
+		<img src="webcam_cherrybranch" alt="webcam image" width="100%"max-width="100%">
+	</div>
+	
+	<?php
+		$dbname="cherrybranch";
+		$numgps=1000;
+		include 'ferrydata.php';
+	?>
+	    
+</div>
+
+</body>
+</html>

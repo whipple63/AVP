@@ -1,0 +1,1 @@
+java -cp /home/pi/javp/target/javp-*.jar edu.unc.ims.avp.Broker /home/pi/javp/lib/`hostname`/db.conf /home/pi/javp/lib/`hostname`/flow.conf

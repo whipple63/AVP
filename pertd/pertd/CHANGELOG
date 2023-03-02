@@ -1,0 +1,51 @@
+2007/03/05 RRL
+- The amount of data displayed now spans the available lines on the Pertelian.
+  ex: If line 1 has data but lines 2 and 3 do not, line 1 will now flow down
+  to lines 2 and 3 and the horizontal display will be 3 characters at a time.
+- Allow a configuration file to be specified on the pertd command line.
+  This will allow for multiple copies of pertd to be running to service
+  multiple Pertellian units.
+- Backlight management.  If set, pertd will effectively ignore your backlight
+  on/off commands and manage the backlight based on whether there is data
+  to display or not.
+- If there is no data to display, pertd displays the current date/time.
+- Rewrote the communication routines to use lower level calls.  These calls
+  play much better with the USB/Serial driver than the higher level calls.
+
+Note that this code is in, but I am not pleased with it.  So it's currently
+disabled:
+- Vertical display mode.  If line 1 is the only line that has data, the
+  data for line 1 will flow down to lines 2, 3 and 4 and the display will
+  scroll the lines vertically instead of horizontally.
+
+2006/11/17 PSB
+- Added SIGUSR1 trapping.  When received, schedules data file re-scan.
+- Added pidfile configuration option
+- PID is logged to pidfile, enabling "kill -USR1 `cat pidfile`"
+- The " - " end/start separator is used only if the input line width
+  is > the display width.  I.e., only if scrolling.
+- Added refresh_file_name config option
+- When the file specified by refresh_file_name is created, pertd will
+  schedule a data file re-scan.
+- Added PERTD_VERSION #define in pert_interf.h
+- Created a constant for the LCD screen width and substituted that
+  wherever the width was hardcoded.
+
+
+7/16/2006
+- Changed the way the data files are handled.
+	1. The last modified timestamp is remembered and the data file is not
+	re-read unless the file timestamp has changed.
+	2. The 1024 char limit has been removed.  All data in the file is read and
+	displayed.
+	3. Multi-line data files are now handled.  If there is more than 1 line in
+	the data file, the lines are concatinated seperated by spaces, to display on
+	the LCD.
+- Scrolling is smoother.  The seperator between the end/start of the data line
+now scrolls smooth instead of just disappearing when the end of data line is
+reached.
+- The delay between screen refreshes is now configurable in pertd.conf.
+- Removed the delay function from pertd_interf.c and replaced it with a
+sleep_us for 1 ms.  A 1 ms delay between chars sent to the LCD works fine
+while no delay will result in garbled output.  *** Note that this change
+drastically lowered CPU usage.

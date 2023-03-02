@@ -1,0 +1,5 @@
+*.vcxproj
+*.vcxproj.filters
+*.sln
+__vm
+tension_and_limit/Debug/*

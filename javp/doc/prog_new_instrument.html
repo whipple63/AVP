@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Adding javp Support for New Instruments</title>
+</head>
+<body bgcolor="#ffffff">
+<h1>Adding javp Support for New Instruments</h1>
+<h2>Contents</h2>
+<a href="#intro">Introduction</a><br>
+<a href="#instrument_control">Low-Level Instrument Control</a><br>
+<a href="#broker_adapter">Writing the Broker Adapter</a><br>
+<a href="#broker">Broker Configuration and Use</a><br>
+
+<a name="intro"/>
+<h2>Introduction</h2>
+This document describes how to add software support for a new instrument to
+the javp software distribution.
+
+<a name="instrument_control"/>
+<h2>Low-Level Instrument Control</h2>
+The javp software is designed with layered abstractions to support rapid 
+integration of new hardware.  Typically, a new piece of hardware will connect 
+to the platform via a serial or USB connection (see figure 1).  There may or
+may not be vendor-supplied, linux-friendly software to communicate with the
+instrument.
+<p>
+<center><img src="src/prog_add_new.png"/><br>
+<b>Figure 1 - Typical Instrument Hardware/Software</b></center>
+<p>
+The javp software requires that all hardware have a pure Java API. There are
+several scenarios for satisfying this requirement:
+<ul>
+<li>vendor-supplied java library - A third-party jar file or set of source files
+is available for direct calling by javp.  This is typically the preferred 
+scenario because the vendor library may be kept completely separate from javp 
+and upgraded without affecting javp, and vice-versa
+<li>vendor-supplied non-java library - A more complicated scenario, the programmer
+must wrap the vendor library with a Java Native Interface (JNI) wrapper (see
+figure 2).
+<p>
+<center><img src="src/prog_add_jni.png"/><br>
+<b>Figure 2 - Add Java Support if Needed</b></center>
+<p>
+<li>vendor-supplied command-line tools - In this scenario, the programmer
+must write a Java class that interacts with the linux shell to communicate
+with the command-line tools as required
+<li>custom instrument control code - In this scenario, the programmer writes
+pure Java code to directly manipulate the instrument via it's native 
+communication channel, e.g. serial, USB or socket.  Note that if the
+instrument control software is to be included with the javp software 
+distribution, please add the new classes under
+<a href="javadoc/index.html">edu.unc.ims.instruments</a>.
+</ul>
+The pure Java API need not implement any interfaces or be derived 
+from any common classes.  A user of the API should, however, be able to access 
+the new instrument for relevant configuration, startup, shutdown, reset, read data, etc.
+
+<a name="broker_adapter"/>
+<h2>Writing the Broker Adapter</h2>
+Each instrument is represented by a single command-line application instance 
+called a Broker.  All Brokers share a common set of features, e.g. for
+processing configuration files, command-processing and other common functions.
+The Broker source code is also shared among the instruments by employing the
+<a href="http://en.wikipedia.org/wiki/Adapter_pattern">Adapter Pattern</a>.
+BrokerAdapter is an abstract Java class that implements the BrokeredDevice
+interface.  Any new instrument, therefore, need only create a single Java class
+that derives from the <a href="javadoc/edu.unc.ims/avp/adapters/BrokerAdapter.html">edu.unc.ims.avp.adapter.BrokerAdapter</a> class.  
+<b>TODO - describe in detail each BrokerAdapter method.  In the meantime,
+refer to the <a href="javadoc/index.html">javadocs for details</a></b>
+
+<a name="broker"/>
+<h2>Broker Configuration and Use</h2>
+When the BrokerAdapter class is complete, you may <a href="index.html">
+refer to the general instructions</a> on configuration and use of a Broker.  
+Note that the configuration file directive <code>adapter_class</code> should 
+be set to your new class name.
+
+</body>
+</html>

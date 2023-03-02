@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -f /tmp/pertd2.fifo
+make debug
+./pertd2 ./pertd2.conf

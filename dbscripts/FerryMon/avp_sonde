@@ -1,0 +1,31 @@
+-- the following should allow an argument to be passed and use `hostname` if not
+\set dbprefix :dbprefix
+\set lhost `hostname`
+SELECT CASE 
+  WHEN :'dbprefix'= ':dbprefix'
+  THEN :'lhost'
+  ELSE :'dbprefix' 
+END AS "dbprefix"  \gset
+
+\set tablename :dbprefix _sonde
+\set casttablename public. :dbprefix _cast
+
+BEGIN;
+CREATE TABLE :tablename (
+    cast_no     	int4,
+    loc_code        varchar,
+    sample_time     timestamptz     NOT NULL,
+    tempc           numeric(4,2),
+    spcond          numeric(5,3),
+    salppt          numeric(5,3),
+    dissolved_o2    numeric(4,2),
+    optical_do      boolean,
+    depth_m         numeric(5,3),
+    turbid          numeric(5,1),
+    chl             numeric(4,1),   
+    ph              numeric(4,2),
+    PRIMARY KEY (cast_no,loc_code,sample_time),
+    FOREIGN KEY (cast_no,loc_code) REFERENCES :casttablename (cast_no,loc_code) ON DELETE NO ACTION ON UPDATE CASCADE
+);
+COMMIT;    
+

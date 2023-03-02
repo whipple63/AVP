@@ -1,0 +1,133 @@
+pertd2 - A daemon that displays information on the Pertelian USB LCD display
+
+Overview:
+This program creates a fifo and listens to it for commands.  The commands
+can be used to turn the backlight on/off, set the data of each line to
+display, stop the program, etc.
+
+If the lines are more than the 20 chars allowed for each line, the data is 
+scrolled horizontally.
+
+The data will wrap into unused lines.  Ex: if line 1 has data, but line 2 does
+not, the data from line 1 will wrap into line 2 and both lines will scroll at
+double speed.
+
+If there is no data to display, the current date/time will display.
+
+The interface to the daemon is through a fifo.  The name and location
+of this fifo is set via a configuration file /etc/pertd2.conf
+Optionally, you can specify a configuration file on the pertd command line.
+
+The program is set to go daemon right away.  So when you run pertd2,
+you will get a prompt back immediately as it goes off into the background
+and not be terminated when you log off.
+
+Note that on my system (Mandriva 2007), when the user logs off, ownership
+of /dev/ttyUSB0 goes back to root.  So it's probably a good idea to run
+this daemon as root.  See the service directory for turning pertd2 into
+a service that runs when the system boots.
+
+Configuration:
+delay_time -
+   The interval between screen refreshes in ms.  (1000000ms = 1 second)
+   This will basically control how fast the Pertelian scrolls the data
+   across the screen.
+   Default: 500000 (1/2 second)
+
+char_delay -
+   The delay between each character sent to the Pertelian.  This delay prevents
+   the program from sending data too fast and causing garbled output on the
+   display.  Newer systems may not need any delay, so I made this configurable.
+   The delay is in ms.  1 ms is usually needed for old systems.  If your
+   display is very slow, reduce this to 0.  If the output is garbled, put it
+   to 1.
+   Default: 1
+
+device - 
+   The device the Pertelian is on.
+   Default: /dev/ttyUSB0
+
+fifo_name -
+   The name of the fifo that pertd2 creates.
+
+backlight_mgt -
+   Backlight management.  This indicates whether you want pertd2 to
+   manage the backlight or not.  Basically it manages it by turning the
+   backlight on when there is data to display and off when there is no data.
+   1 = pertd2 manages the backlight.  0 = it doesn't.
+   Default: 0
+
+Commands:
+backlight on
+backlight off
+stop
+line1
+line2
+line3
+line4
+delay time
+char delay
+backlight mgt on
+backlight mgt off
+
+You communicate by sending the command to the fifo.  ex:
+echo "backlight on" > /tmp/pertd2.fifo
+
+Most of the commands should be self-explanatory.
+
+The commands:
+
+backlight on
+backlight off
+stop
+backlight mgt on
+backlight mgt off
+
+are all single line commands.
+
+The "delay time" and "char delay" commands take a second line that specified
+the value.  ex:
+
+delay time
+500000
+
+The "line?" commands are a little more complex. ex:
+line1
+600
+==EOD==
+The quick brown fox jumped over the lazy dog.
+==EOD==
+
+The first line (line1) is the command, also telling pertd2 which line
+you want this data to go in.
+The second line (600) is the number of seconds pertd2 should display the
+data.  Basically an expiration time.  0 seconds means "don't expire."
+The third line is the end of data marker.  It will not display.
+The rest of the lines are the data to be displayed.  New lines will be
+converted to spaces.  The data goes from the first EOD marker until it
+sees another line with the EOD marker, or until it his end of file (i.e.
+the fifo is empty).
+
+So, you can put these lines into a file:
+line1
+12
+==EOD==
+19:26:59
+==EOD==
+line2
+12
+==EOD==
+Testing
+==EOD==
+
+then you can
+cat file > /tmp/pertd2.fifo
+to send the commands.
+
+The "sendcommands" directory contains examples of programs that send commands
+to the fifo.
+
+I release my code into the Public Domain.  Have fun, but use this code
+and the resulting program at your own risk. --Ron Lauzon
+
+2007/03/24 Created by Ron Lauzon

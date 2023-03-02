@@ -1,0 +1,1 @@
+java -cp /home/avp/javp/target/javp-*.jar edu.unc.ims.avp.Broker /home/avp/javp/lib/`hostname`/db.conf /home/avp/javp/lib/`hostname`/mm3.conf

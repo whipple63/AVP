@@ -1,0 +1,23 @@
+-- the following should allow an argument to be passed and use `hostname` if not
+\set dbprefix :dbprefix
+\set lhost `hostname`
+SELECT CASE 
+  WHEN :'dbprefix'= ':dbprefix'
+  THEN :'lhost'
+  ELSE :'dbprefix' 
+END AS "dbprefix"  \gset
+
+\set tablename :dbprefix _depth
+
+BEGIN;
+CREATE TABLE :tablename (
+    loc_code             varchar         NOT NULL,
+    sample_time          timestamptz     NOT NULL,
+    working_depth        numeric(5,3),
+    calculated_depth     numeric(5,3),
+    calculated_depth_std numeric(5,3),
+    num_good_pings       integer,
+    temp_c               numeric(4,2),
+    PRIMARY KEY (loc_code, sample_time)
+);
+COMMIT;

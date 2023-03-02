@@ -1,0 +1,9 @@
+*.vcxproj
+*.filters
+__vm/
+*.sln
+Release/
+src/
+Debug/
+*.tmp
+old/
