@@ -14,7 +14,8 @@ class send_email():
 
     def __init__(self):
         self.gmail_user = "AutonomousVerticalProfiler@gmail.com"
-        self.gmail_pwd = "6600sonde"
+        #self.gmail_pwd = "6600sonde"
+        self.gmail_pwd = "cztjdjrwpzhmmzno"
 
     def mail(self, to, subject, text, attach=None):
         msg = MIMEMultipart()
