@@ -11,5 +11,5 @@ cd "$PIC_DIR$TODAY"
 
 HM=$(date +"_%H%M")
 
-fswebcam -r 1280x720 --bottom-banner $PIC_DIR$TODAY/$TODAY$HM.jpg
+fswebcam -r 1920x1080 --delay 5 --skip 5 --bottom-banner $PIC_DIR$TODAY/$TODAY$HM.jpg
 
