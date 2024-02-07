@@ -133,6 +133,15 @@ public final class Sonde6 implements Runnable {
 
     public void connectSocket() throws UnknownHostException, IOException {
         mLogger.log("Possible initialization, resume, or socket disconnect.  (Re)connecting sonde socket.", this.getClass().getName(),  LogLevel.INFO);
+        if (mSocket != null) {
+            try {
+                mSocket.close();
+                mSocket=null;
+            } catch (IOException ee) { 
+            /* so the close failed, move on */
+            //mSocket=null;
+            }        
+        }
         mSocket = new Socket(mHost, mPort);
         mSocket.setSoTimeout(500);
         mReader = new InputStreamReader(mSocket.getInputStream());
@@ -794,7 +803,7 @@ public final class Sonde6 implements Runnable {
                 }
             }
 
-            if (error) { break; }
+            if (error) { continue; }
 
             l = l.trim();
             addExpectLine(l);
@@ -855,14 +864,30 @@ public final class Sonde6 implements Runnable {
      * @throws Exception
      */
     private void expect(final String cmd, final long ttl_secs, final String target) throws Exception {
-        long totalSlept = 0;
+        //long totalSlept = 0;
         long sleepTime = 100;
-        long maxSleep = ttl_secs * 1000;
-
-        clearExpectBuffer();
-        // Need to wake instrument if it has gone to sleep
-        mWriter.print("\r\n");
-        mWriter.flush();
+        //long maxSleep = ttl_secs * 1000;
+        long startTime = System.currentTimeMillis();
+        
+        boolean doneTesting = false;
+        while(!doneTesting) {
+            try {
+                clearExpectBuffer();
+                // Need to wake instrument if it has gone to sleep
+                mSocket.getOutputStream().write('\r');
+                mSocket.getOutputStream().write('\n');
+                //mWriter.print("\r\n");
+                //mWriter.flush();
+                doneTesting = true;
+            } catch  (Exception e) { // We never expect an exception here so check the connection
+                    mLogger.log("Expect threw exception writing to Sonde.  Checking Socket.", this.getClass().getName(),  LogLevel.WARN);
+                    if ( checkSocket()==false ) { 
+                        setState(S_DISCONNECTED);
+                        return; 
+                    }    // failed to reconnect
+                    Thread.sleep(5000);  // let's not generate exceptions too quickly
+            }
+        }
 
         // If the instrument was asleep this will wake it up, but time out
         // If it was awake it will read one prompt
@@ -878,22 +903,19 @@ public final class Sonde6 implements Runnable {
             Thread.sleep(sleepTime);
             try {
                 waitForLines(2, ttl_secs);
-            } catch (Exception e) { // We never expect an exception here so check the connection
-//                System.out.println("Got exception waiting for lines.");
-                mRecursionCount++;
-                if (mRecursionCount == 1) { // checkSocket calls expect again.  Only allow one.
-//                    System.out.println("Calling checkSocket");
-                    if (!checkSocket(cmd, ttl_secs, target)) { // true if the socket is good again, will re-issue command
-                        throw e;    // couldn't fix the socket so throw the exception
-                    }
-                }
-                mRecursionCount = 0;
+            } catch (Exception e) { // We never expect an exception here
+                mLogger.log("Expect threw exception waiting for response from Sonde.  Checking Socket. ", this.getClass().getName(),  LogLevel.WARN);
+                if ( checkSocket()==false ) { 
+                    setState(S_DISCONNECTED);
+                    return; 
+                }    // failed to reconnect
             }
             synchronized(mLock) { if(mShutdown == true) { return; } }
  //           System.out.println("Checking mLines for "+target);
             synchronized(mLines) { if(mLines.contains(target)) { done = true; } }
-            totalSlept += sleepTime;
-            if(totalSlept >= maxSleep) { done = true; throw new Exception("timeout waiting for matching lines in expect"); }
+            //totalSlept += sleepTime;
+            //if(totalSlept >= maxSleep) { done = true; throw new Exception("timeout waiting for matching lines in expect"); }
+            if(System.currentTimeMillis()-startTime >= ttl_secs*1000) { done = true; throw new Exception("timeout waiting for matching lines in expect"); }
         }
     }
 
@@ -916,15 +938,16 @@ public final class Sonde6 implements Runnable {
     /*
     Try to re-establish a broken socket and re-issue command
     */
-    private boolean checkSocket(final String cmd, final long ttl_secs, final String target)  {
+    private boolean checkSocket()  {
         boolean result = false;
-//        disconnect();
+
         try { 
             connectSocket();
             result = true;  // assume no exception means success
-            expect(cmd, ttl_secs+10, target);  // try again with 10 extra seconds
+            mLogger.log("Socket re-connected.", this.getClass().getName(),  LogLevel.DEBUG);
         } catch (Exception e) {
             // do nothing
+            mLogger.log("checkSocket threw exception attempting to reconnect.", this.getClass().getName(),  LogLevel.DEBUG);
         }
         return result;
     }
@@ -1039,17 +1062,17 @@ public final class Sonde6 implements Runnable {
     /**
     Socket.
     */
-    private Socket mSocket;
+    private volatile Socket mSocket;
 
     /**
     Reader.
     */
-    private InputStreamReader mReader;
+    private volatile InputStreamReader mReader;
 
     /**
     Writer.
     */
-    private PrintWriter mWriter;
+    private volatile PrintWriter mWriter;
 
     /**
     Reader thread.
@@ -1093,6 +1116,4 @@ public final class Sonde6 implements Runnable {
      */
     private long mSamplingStartTime= 0;
     private int  mSamplingMaxTime  = 3600 * 1000;
-
-    private int mRecursionCount = 0;    // used in expect
 }

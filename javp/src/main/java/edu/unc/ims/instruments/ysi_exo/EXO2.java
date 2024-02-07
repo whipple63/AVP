@@ -705,7 +705,7 @@ public final class EXO2 implements Runnable {
                 }
             }
 
-            if (error) { break; }
+            if (error) { continue; }
 
             l = l.trim();
             addExpectLine(l);
