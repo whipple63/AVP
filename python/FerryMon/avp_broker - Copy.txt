@@ -736,8 +736,8 @@ class _BrokerClient(object):
                     this_sample_time_long = this_param.get('sample_time',None)
                     if this_value != None: # Do some error checking and post-processing
                         # Brokers will return double precision float minimum value when they don't have a real value
-                        if isinstance(this_value, float) and this_value <= self.MINIMUM_VALUE and this_value > 0: 
-                            this_value = None # So set it to None
+#                        if this_value <= self.MINIMUM_VALUE and this_value > 0: 
+#                            this_value = None # So set it to None
                         if this_object._units == 'boolean': # We also need to make sure booleans are formatted correctly
                             this_value = avp_util.t_or_f(this_value,debug_mode=debug_mode,**kwargs)
                         setattr(this_object,"_value",this_value)

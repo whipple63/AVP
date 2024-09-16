@@ -1,0 +1,11 @@
+/home/pi/log/*.log
+{
+        rotate 14
+        daily
+        missingok
+        notifempty
+        delaycompress
+        compress
+        copytruncate
+}
+

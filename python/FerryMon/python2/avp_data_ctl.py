@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #Built in Modules
-
+from __future__ import print_function
 from datetime import datetime, timedelta
 import logging
 import signal
@@ -385,7 +385,7 @@ class DataControl(object):
             j = False
             if (mode == 3) or (mode == 2):   # only check gps for 3d fixes
                 try:
-                    if lat != 'NaN' and lon != 'NaN':
+                    if lat is not 'NaN' and lon is not 'NaN':
                         for i in range(len(port_lat)):
                             distance, bearing = gislib.get_distance_bearing((float(port_lat[i]),float(port_lon[i])), (lat, lon))
                             if distance < float(port_radius[i]): # add more parameters

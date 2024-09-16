@@ -425,14 +425,14 @@ public final class EXO2 implements Runnable {
     // is correct.
     public Long readSondeDateTime() throws Exception {
         Date today;
-        DateFormat dateFormatter;
         SimpleDateFormat ft = new SimpleDateFormat ("MM/dd/yy H:mm:ss");
+        SimpleDateFormat sysft = new SimpleDateFormat ("MM/dd/yy");
         Long lt = 0L;
                 
-        dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);
         today = new Date();
-        String sDateTime = dateFormatter.format(today);
-
+        String sDateTime = sysft.format(today);
+		//System.out.println(sDateTime);
+		
         String cmd = "time\r";
         expect(cmd, 30, "#");
         synchronized(mLines) {
@@ -444,6 +444,7 @@ public final class EXO2 implements Runnable {
             if (mLines.size() >= 3) { sDateTime = sDateTime.trim() + " " + mLines.get(1).trim(); }
         }
         clearExpectBuffer();
+		//System.out.println(sDateTime);
         
         try {
             lt = ft.parse(sDateTime).getTime();
@@ -556,8 +557,8 @@ public final class EXO2 implements Runnable {
 //    }
 
     public void clockSync() throws Exception {
-        Date today;
-        String dateOut, timeOut;
+        Date today, sondeTime;
+        String dateOut, timeOut, sondeTimeOut;
         DateFormat dateFormatter;
         SimpleDateFormat timeFormatter;
         
@@ -566,19 +567,21 @@ public final class EXO2 implements Runnable {
         dateOut = dateFormatter.format(today);
 
         Long sysTime = today.getTime();
-        Long sondeTime = readSondeDateTime();
-        
+        sondeTime = new Date(readSondeDateTime());
+
+		timeFormatter = new SimpleDateFormat("H:mm:ss");
+		sondeTimeOut = timeFormatter.format(new Date(sondeTime.getTime()));  //because this is an EXO we only have time, date can't be set
         
         Logger.getLogger().log("ClockSync read sonde clock as: " +
-                new Date(sondeTime).toString() + ", system time is: " + today.toString(),
+                sondeTimeOut + ", system time is: " + timeFormatter.format(new Date(sysTime)),
                 this.getClass().getName(), LogLevel.DEBUG);
         
-        if ( Math.abs(sondeTime - today.getTime()) > 300000 ) {  // 5 minutes
+        if ( Math.abs(sondeTime.getTime() - sysTime) > 300000 ) {  // 5 minutes
             Logger.getLogger().log("Sonde clock more than 5 minutes from system clock.", this.getClass().getName(), LogLevel.WARN);
         }
 
         // set clock if necessary
-        if ( Math.abs(sondeTime - sysTime) > 2000 ) {  // 2 seconds
+        if ( Math.abs(sondeTime.getTime() - sysTime) > 2000 ) {  // 2 seconds
             Logger.getLogger().log("Setting Sonde clock.", this.getClass().getName(), LogLevel.DEBUG);
 
             today = new Date();

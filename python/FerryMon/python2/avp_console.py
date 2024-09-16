@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #Built in Modules
-
+from __future__ import print_function
 import cmd
 from datetime import datetime, timedelta
 import logging
@@ -166,8 +166,8 @@ class _BrokerConsole(_BaseConsole):
             tz_width = 5
             para_list = []
             for item in result['list_data']: # get rid of anything not yet implemented ('NI' or 'WO').
-                if result['list_data'][item].get('type',None) in ('RO','RW'):
-                    para_list.append(item)
+				if result['list_data'][item].get('type',None) in ('RO','RW'):
+					para_list.append(item)
             try:
                 result['current_values'] = self.obj.get_value(para_list,verbose=True,debug_mode=self.debug_mode)
             except Exception as e:
@@ -448,7 +448,7 @@ class _BrokerConsole(_BaseConsole):
                         print('*** Connection closed by remote host ***')
                         break
                     if text:
-                        sys.stdout.write(str(text, 'utf-8'))
+                        sys.stdout.write(text)
                         sys.stdout.flush()
                 if sys.stdin in read_list:
                     char = sys.stdin.read(1)
@@ -469,8 +469,8 @@ class _BrokerConsole(_BaseConsole):
                         telnet_running = False
                         break 
                     if not char: break
-                    if mode == 'RW':
-                        telnet_session.write(str.encode(char))
+                    if mode is 'RW':
+                        telnet_session.write(char)
         finally:
             telnet_session.close()
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
@@ -605,7 +605,7 @@ class _BrokerConsole(_BaseConsole):
     def do_power(self,arg):
         if arg not in ('on','off','check'):
             arg = 'check'
-        if arg != 'check':
+        if arg is not 'check':
             self.do_token('acquire')
             if self.obj.token_acquired is False:
                 print("Unable to get token, aborting.")
@@ -748,7 +748,7 @@ class MainConsole(_BaseConsole):
         print("Print parameters")
         print("     usage: para [flow] [gps] [isco] [sonde|s] [wind]")
     def do_exit(self,args):
-        avp_input = eval(input("enter x to exit:"))
+        avp_input = input("enter x to exit:")
         if avp_input.upper() == 'X': return -1
     def do_shutdown(self,args):
         # Perhaps support all
@@ -1023,8 +1023,8 @@ class FlowConsole(_BrokerConsole):
             eol = ""
             self.direct_connect(eol,'RO')
     # Aliases
-        
-        
+		
+		
 class GPSConsole(_BrokerConsole):
     ''' GPS Console Cmd class
     '''
@@ -1080,7 +1080,7 @@ class GPSConsole(_BrokerConsole):
             #eol = ""
             eol = "\x0d\x0a"
             self.direct_connect(eol,'RW')
-            
+			
     # Aliases
 
 class ISCOConsole(_BrokerConsole):
@@ -1157,25 +1157,25 @@ class ISCOConsole(_BrokerConsole):
         try:
             for arg in args_l:
                 param = int(arg[1:]) # All arguments we are looking for are integers
-                if arg[:1] == 'b':
+                if arg[:1] is 'b':
                     if param >= 1 and param <= self.obj.NUM_BOTTLES:
                         bottle_num = param
                     else:
                         print("{0} is not a valid bottle number".format(param))
                         return
-                elif arg[:1] == 'v':
+                elif arg[:1] is 'v':
                     if param >= 1 and param <= self.obj.BOTTLE_SIZE:
                         sample_volume = param
                     else:
                         print("{0} is not a valid bottle volume".format(param))
                         return
-                elif arg[:1] == 'c':
+                elif arg[:1] is 'c':
                     if param >= 0 :
                         cast_number = param
                     else:
                         print("{0} is not a valid cast number".format(param))
                         return
-                elif arg[:1] == 'd':
+                elif arg[:1] is 'd':
                     sample_depth = param
                 else:
                     print("{0} is not a valid argument")

@@ -312,7 +312,7 @@ class _SubscriptionHandler(threading.Thread):
                             except Exception as e:
                                 self.logger.error("{0}, unable to parse message_time from {1}".format(e,self.subscriptions))
                 except Exception as e:
-                    print(("_SubscriptionHandler exception: {0} on {1}".format(e,self.n)))
+                    print("_SubscriptionHandler exception: {0} on {1}".format(e,self.n))
 
 class _BrokerClient(object):
     '''
@@ -363,7 +363,7 @@ class _BrokerClient(object):
         Raises:
         '''
         debug_mode = kwargs.pop('debug_mode',False)
-        if debug_mode: print(("{0} broker in debug_mode".format(broker_name)))
+        if debug_mode: print("{0} broker in debug_mode".format(broker_name))
         result = {}
         self.config = config
         self.BROKER_NAME = broker_name
@@ -415,7 +415,7 @@ class _BrokerClient(object):
                     this_data_item = getattr(self,value)
                     setattr(self,key,this_data_item)
                     self.data_points[key] = getattr(self,key)
-                    if debug_mode: print(("Aliasing {0} to {1}".format(key,value)))
+                    if debug_mode: print("Aliasing {0} to {1}".format(key,value))
                 if len(self.param_aliases) > 0:
                     self.logger.debug("Added {0} parameter aliases.".format(len(self.param_aliases)))
             elif result['_structure_data'] == 0:
@@ -634,7 +634,7 @@ class _BrokerClient(object):
             if debug_mode: print("raw_result=None")
             raw_result = {'error':{'message':'empty string','code':0}}
         if raw_result.__class__ != {}.__class__:
-            if debug_mode: print(("{0} not a dictionary, it is a {1}".format(raw_result,raw_result.__class__)))
+            if debug_mode: print("{0} not a dictionary, it is a {1}".format(raw_result,raw_result.__class__))
             self.logger.debug("Error in _result_checker, result {0} is not a dictionary".format(raw_result))
             raw_result = {'error':{'message':'Returned object {0} not a dictionary'.format(raw_result),'code':0}}
         # remove some things we don't need
@@ -643,7 +643,7 @@ class _BrokerClient(object):
         # Now process what we have
         raw_result_error = raw_result.get('error',None)
         if raw_result_error:
-            if debug_mode: print(("error result: {0}".format(raw_result_error)))
+            if debug_mode: print("error result: {0}".format(raw_result_error))
             result = raw_result
         elif raw_result.get('result') in bad_results:
             if debug_mode: print("Result was some sort of JAVA error")
@@ -667,7 +667,7 @@ class _BrokerClient(object):
                     result = raw_result
             except Exception as e:
                 result = {'error':{'message':'unknown error on:{0}'.format(raw_result),'code':0}}
-            if debug_mode: print(("final result={0}".format(result)))
+            if debug_mode: print("final result={0}".format(result))
         return result
     def _status(self, data_items,verbose=False,timeout=None,**kwargs):
         '''
@@ -736,7 +736,7 @@ class _BrokerClient(object):
                     this_sample_time_long = this_param.get('sample_time',None)
                     if this_value != None: # Do some error checking and post-processing
                         # Brokers will return double precision float minimum value when they don't have a real value
-                        if isinstance(this_value, float) and this_value <= self.MINIMUM_VALUE and this_value > 0: 
+                        if this_value <= self.MINIMUM_VALUE and this_value > 0: 
                             this_value = None # So set it to None
                         if this_object._units == 'boolean': # We also need to make sure booleans are formatted correctly
                             this_value = avp_util.t_or_f(this_value,debug_mode=debug_mode,**kwargs)
@@ -782,7 +782,7 @@ class _BrokerClient(object):
         '''
         debug_mode = kwargs.pop('debug_mode',False)
         return_values = {}
-        if debug_mode: print(("Looking up values for {0}".format(data_item_names)))
+        if debug_mode: print("Looking up values for {0}".format(data_item_names))
         # Check if data_item_names is a list
         if not isinstance(data_item_names,(list,tuple)):
             error_str = "Error in get_value. Method takes a list or tuple as an argument, not {din} of {tdin}".format(
@@ -903,7 +903,7 @@ class _BrokerClient(object):
                     self.subscriptions[parameter] = this_data_item # Might be an alias, or just doing the same thing twice
                     self.subscriptions[data_name] = this_data_item
                     setattr(this_data_item,'_subscribed',True)
-                    if debug_mode: print(("Subscribing to {0}".format(data_name)))
+                    if debug_mode: print("Subscribing to {0}".format(data_name))
                 else:
                     if debug_mode: self.logger.debug( "Already subscribed to {0}.{1}".format(self.BROKER_NAME,parameter) )
             else:
@@ -920,9 +920,9 @@ class _BrokerClient(object):
         params = {'data':checked_data_item_names,'style':style,'updates':'on_new'}# Puts parameters in a dictionary
         if on_change:
             params['updates'] = 'on_change'
-        if min_interval != None and min_interval > 0:
+        if min_interval > 0:
             params['min_update_ms'] = min_interval
-        if max_interval != None and max_interval > 0:
+        if max_interval > 0:
             params['max_update_ms'] = max_interval
         self._json_id += 1
         subscribe_result = self.socket_handler.send_rpc('subscribe',
@@ -1004,7 +1004,7 @@ class _BrokerClient(object):
         elif list(self.subscriptions.keys()) == ['message_time']:
             result['unsubscribe'] = self.unsubscribe(list(self.subscriptions.keys())) # A little recursive
         elif debug_mode:
-            print(("Remaining subscriptions {0}".format(list(self.subscriptions.keys()))))
+            print("Remaining subscriptions {0}".format(list(self.subscriptions.keys())))
         return result
     def unsubscribe_all(self,**kwargs):
         ''' Unsubscribe to all keys in subscription dictionary and remove all callbacks
@@ -1156,7 +1156,7 @@ class _BrokerClient(object):
                                                                    timeout=timeout,
                                                                    params = {"name":name},
                                                                    debug_mode=debug_mode)
-        if debug_mode: print(("_token_force_acquire for {0} result: {1}".format(name,_token_force_acquire_result)))
+        if debug_mode: print("_token_force_acquire for {0} result: {1}".format(name,_token_force_acquire_result))
         force_acquire_result = self._result_checker(_token_force_acquire_result)
         if force_acquire_result.get('result','error') == 'ok':
             self.token_acquired = True
@@ -1173,7 +1173,7 @@ class _BrokerClient(object):
                                                            timeout=timeout,
                                                            params=None,
                                                            debug_mode=debug_mode)
-        if debug_mode: print(("tokenRelease result: {0}".format(tokenRelease_result)))
+        if debug_mode: print("tokenRelease result: {0}".format(tokenRelease_result))
         release_result = self._result_checker(tokenRelease_result)
         if release_result.get('result') == 'ok':
             self.token_acquired = False
@@ -1244,7 +1244,7 @@ class _BrokerClient(object):
             print((result.get('acquire_result')))
             self.logger.error("Unknown response in {0}.get_token: {1}",format(
                                 self.BROKER_NAME,result.get('acquire_result')))
-        if debug_mode: print(("get_token result:{0}".format(result)))
+        if debug_mode: print("get_token result:{0}".format(result))
         return result
     def shutdown_broker(self,timeout=None,**kwargs):
         debug_mode = kwargs.pop('debug_mode',False)
@@ -1547,7 +1547,7 @@ class SondeBroker(_BrokerClient):
         wake_time = datetime.now(pytz.reference.LocalTimezone()) + timedelta(seconds=5)
         self.logger.info("Waiting {0} sec for new depth value ".format((wake_time - datetime.now(pytz.reference.LocalTimezone())).seconds),)
         while datetime.now(pytz.reference.LocalTimezone()) < wake_time:
-            print(("{0:6} {1}".format(self.depth_m.value,self.depth_m.units)))
+            print("{0:6} {1}".format(self.depth_m.value,self.depth_m.units))
             time.sleep(1)
         print()
         self.get_value(['depth_m'],verbose=False,timeout=None,debug_mode=debug_mode) #refresh value
@@ -1688,7 +1688,7 @@ class SondeBroker(_BrokerClient):
         else:
             message +=  '{0}: {1} < {2}. '.format('spcond_mScm',conductivity,self.inwater_cond)
             spcond_in_water = False
-        if debug_mode: print(("comparing current depth_m {0} to max allowed {1}".format(self.depth_m.value,self.INWATER_DEPTH)))
+        if debug_mode: print("comparing current depth_m {0} to max allowed {1}".format(self.depth_m.value,self.INWATER_DEPTH))
         if self.depth_m.value is None:
             message += 'depth_m unknown. '
         elif self.depth_m.value >= self.INWATER_DEPTH + self.pressure_error: 
@@ -2034,7 +2034,7 @@ class MM3Broker(_BrokerClient):
                                                timeout=timeout,
                                                params=None,
                                                debug_mode=debug_mode)
-        if debug_mode: print(("mm3Broker.reset result:{0}".format(result)))
+        if debug_mode: print("mm3Broker.reset result:{0}".format(result))
         return self._result_checker(result)
     def restore(self,timeout=None,**kwargs):
         ''' Implements the Motion Mind 3's resore command
@@ -2049,7 +2049,7 @@ class MM3Broker(_BrokerClient):
                                                timeout=timeout,
                                                params=None,
                                                debug_mode=debug_mode)
-        if debug_mode: print(("mm3Broker.restore result:{0}".format(result)))
+        if debug_mode: print("mm3Broker.restore result:{0}".format(result))
         return self._result_checker(result)
     def do_write_store(self,params,**kwargs): #Can't call this write-store since there is already a parameter called that
         ''' Implements the Motion Mind 3's write store command
@@ -2067,7 +2067,7 @@ class MM3Broker(_BrokerClient):
         if position is None:
             result = self.get_value(['position'],verbose=False,debug_mode=debug_mode)
             position = self.position.value
-        if debug_mode: print(("Saving position {0} to EEPROM".format(position)))
+        if debug_mode: print("Saving position {0} to EEPROM".format(position))
         result = self.do_write_store(params={'position':position}, debug_mode=debug_mode)
         return result
 
@@ -2374,7 +2374,7 @@ class LisstBroker(_BrokerClient):
             flush_thread = threading.Thread(target=self._do_flush,
                                             name=name,
                                             kwargs = {'FLUSH_TIME':flush_time,'thread':True,'debug_mode':debug_mode})
-            if debug_mode: print(("Spawning {0} as {1} with FLUSH_TIME={2}".format(self._do_flush,name,flush_time)))
+            if debug_mode: print("Spawning {0} as {1} with FLUSH_TIME={2}".format(self._do_flush,name,flush_time))
             flush_thread.start()
             result  = {'result':'ok','message':'Flush routine started as a thread','thread':flush_thread}
         return result
@@ -2580,7 +2580,7 @@ def get_date_time(long_time,**kwargs):
                 ms = timedelta(0)
             result = datetime.strptime(ds, '%Y%m%d%H%M%S').replace(tzinfo=pytz.reference.LocalTimezone()) + ms
         except Exception as e:
-            if (debug_mode): print(("Error in get_date_time {0} processing {1}".format(e,long_time)))
+            if (debug_mode): print("Error in get_date_time {0} processing {1}".format(e,long_time))
     return result
     
     
@@ -2601,15 +2601,15 @@ def example():
     # Subscribe to some values
     mm3.add_subscriptions(['amps','temp_fault'],on_change=True,subscriber="example_code")
     mm3.subscriptions #show subscription values
-    print(("position is", mm3.value(['position']))) #Update the value of position object and return value
-    print((mm3.position.value,mm3.position.units)) # This should print out the same thing, since it doesn't generate a status call
-    print((mm3.position.sample_time,mm3.position.tz))
-    print((mm3.amps.value, mm3.amps.units))
+    print("position is", mm3.value(['position'])) #Update the value of position object and return value
+    print(mm3.position.value,mm3.position.units) # This should print out the same thing, since it doesn't generate a status call
+    print(mm3.position.sample_time,mm3.position.tz)
+    print(mm3.amps.value, mm3.amps.units)
     result = mm3.get_token(program_name='avp_broker',
                                 calling_obj='main') # Get the token if we are going to set a value.
     if result.get('acquire_result','') == 'ok':
         mm3.set({'position':0}) #Reset the position counter.
-        print((mm3.position.set_to,mm3.position.set_at))
+        print(mm3.position.set_to,mm3.position.set_at)
     mm3.unsubscribe_all()
     mm3.disconnect()
     

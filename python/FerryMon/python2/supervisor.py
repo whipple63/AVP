@@ -20,6 +20,7 @@ import threading
 from time import sleep, strptime
 # Installed Modules
 from configobj import ConfigObj
+# if os.name is 'posix':
 import psutil
 import pytz
 # Custom Modules
@@ -162,7 +163,8 @@ class Supervisor(object):
         """
         low_drive_threshold = float(self._config['supervisor'].get('LOW_DRIVE_THRESHOLD', 0.10))
         low_ram_threshold = float(self._config['supervisor'].get('LOW_RAM_THRESHOLD', 0.10))
-        drives = {'root': {'mount': '/', 'field': 'disk_free_root'}}
+        drives = {'root': {'mount': '/', 'field': 'disk_free_root'},
+                  'database': {'mount': '/data', 'field': 'disk_free_data'}}
         for drive, info in list(drives.items()):
             if os.name == 'posix':
                 s_drive = os.statvfs(info['mount'])
@@ -186,7 +188,7 @@ class Supervisor(object):
                 self._logger.debug(drive_message.format(pct=pct, thresh=thresh, drive=drive, r1=r1, r2=r2))
         # check percentage of available memory
         # mem = psutil.phymem_usage()
-        # if os.name == 'posix':
+        # if os.name is 'posix':
         # free_memory_pct = float(mem.total - mem.used + psutil.cached_phymem()) / mem.total
         free = 100.0 - psutil.virtual_memory().percent
         # else:
@@ -198,7 +200,7 @@ class Supervisor(object):
         else:
             self._logger.debug(mem_message.format(free=free, range='above', thresh=low_ram_threshold*100))
         # check CPU temperature
-        if os.uname()[4] == 'armv7l' or os.uname()[4] == 'aarch64':
+        if os.uname()[4] == 'armv7l':
             # On the RPi
             temp_deg_c = int(open('/sys/class/thermal/thermal_zone0/temp').read()) / 1e3
             self._log_CPU_temp(temp_deg_c)
@@ -467,4 +469,3 @@ if __name__ == "__main__":
         sup.main_loop()
     except KeyboardInterrupt:
         sup.shutdown()
-

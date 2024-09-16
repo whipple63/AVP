@@ -1,0 +1,27 @@
+-- the following should allow an argument to be passed and use `hostname` if not
+\set dbprefix :dbprefix
+\set lhost `hostname`
+SELECT CASE 
+  WHEN :'dbprefix'= ':dbprefix'
+  THEN :'lhost'
+  ELSE :'dbprefix' 
+END AS "dbprefix"  \gset
+
+\set tablename :dbprefix _cast
+
+BEGIN;
+CREATE TABLE :tablename (
+    cast_no     	serial              NOT NULL,
+    loc_code        varchar             NOT NULL,
+    cast_time  		timestamptz         NOT NULL,
+    lat             numeric(13,9),
+    lon             numeric(13,9),
+    sonde_id        varchar(20),
+    sonde_sn        varchar(20),
+    isco            boolean,
+    lisst           boolean,
+    bottom_strike   boolean,
+	flow_rate		numeric(6,2),
+    PRIMARY KEY (cast_no,loc_code)
+);
+COMMIT;

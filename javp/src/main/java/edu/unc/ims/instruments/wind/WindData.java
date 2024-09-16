@@ -110,7 +110,7 @@ public class WindData {
             mAirTemp = Double.valueOf(fields.get(20));
             mAirPressure = Double.valueOf(fields.get(18));
             
-            System.out.println(toString());
+            //System.out.println(toString());
     }
     
    

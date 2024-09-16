@@ -1,7 +1,7 @@
 # AVP Utilities
 
 #Built in Modules
-
+from __future__ import print_function
 import logging
 import os
 import pprint
@@ -321,10 +321,9 @@ def spawnDaemon (newDaemon, stdin='/dev/null', stdout='/dev/null', stderr='/dev/
         os._exit(1) 
  
     # Redirect standard file descriptors. 
-    si = open(stdin, 'r') 
-    so = open(stdout, 'a+') 
-    #se = file(stderr, 'a+', 0) this is how it was for python2
-    se = open(stderr, 'a+') 
+    si = file(stdin, 'r') 
+    so = file(stdout, 'a+') 
+    se = file(stderr, 'a+', 0) 
     os.dup2(si.fileno(), sys.stdin.fileno()) 
     os.dup2(so.fileno(), sys.stdout.fileno()) 
     os.dup2(se.fileno(), sys.stderr.fileno()) 

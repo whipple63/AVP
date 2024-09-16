@@ -1,0 +1,21 @@
+BEGIN;
+CREATE TABLE avp_ipc (
+    broker              varchar         NOT NULL,
+    param               varchar         NOT NULL,
+    value               text,
+    time                timestamptz,
+    PRIMARY KEY (broker,param)
+);
+-- Populates avp_ipc database
+-- DELETE FROM avp_ipc;
+INSERT INTO avp_ipc (broker,param,value) VALUES
+('cast',    'cast_status',          'unknown'),
+('mm3',     'stop_reason',          'unknown'),
+('sched',	'status',				'off');
+
+CREATE OR REPLACE RULE avp_ipc AS ON UPDATE 
+    TO "public"."avp_ipc" 
+    DO NOTIFY avp_ipc;
+COMMENT ON RULE "avp_ipc" ON "public"."avp_ipc" IS 'This should cause the poll command to work in psqcopg2';
+    
+COMMIT;    

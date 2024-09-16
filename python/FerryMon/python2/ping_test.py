@@ -45,7 +45,7 @@ class Pinger(object):
             time.sleep(self.SLEEP_TIME)
             try:
                 result = self.do_ping(self.PING_TARGET)
-                if result == 0:
+                if result is 0:
                     #print("{0} is alive".format(self.PING_TARGET))
                     self.ping_succeeded()
                 else:
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     try:
         config = ConfigObj(sys.argv[1])  # Read the config file
     except Exception as e:
-        print(("Bad usage: {0} {1}".format(sys.argv,e)))
+        print("Bad usage: {0} {1}".format(sys.argv,e))
     #dbh = avp_db.DB_LogHandler(config)
     #dbh.setLevel(logging.INFO)
     logger.setLevel(logging.INFO)  # uncomment to suppress debug messages

@@ -111,7 +111,7 @@ class AvpDB(object):
                 columns.append(column_name[0])
         except Exception as e:
             self.logger.error("in _get_column_names connecting to table {0}:{1}".format(self.table,e))
-            print((dir(self)))
+            print(dir(self))
         finally:
             self.close()
         return columns
@@ -125,7 +125,7 @@ class AvpDB(object):
                 self.ins_que.popleft()
             #self.close()
         except Exception as e:        
-            print(("Couldn't complete buffered insert.  Will try later. - "+str(e)))
+            print("Couldn't complete buffered insert.  Will try later. - "+str(e))
             traceback.print_exc()
     def connect(self,**kwargs):
         print("No need to call AvpDB.connect() No action taken")
@@ -144,7 +144,7 @@ class AvpDB(object):
                                 password=self.DB_PASS,
                                 database=self.DB_NAME)
             except Exception as e:
-                print(("Unable to connect to database:{0}".format(e)))
+                print("Unable to connect to database:{0}".format(e))
             try:
                 if DC:
                     if debug_mode: print("Getting DictCursor")
@@ -155,16 +155,16 @@ class AvpDB(object):
                 else:
                     self.cursor = self.conn.cursor()
             except Exception as e:
-                print(("Unable to get cursor for database:{0}".format(e)))
+                print("Unable to get cursor for database:{0}".format(e))
             if self.cursor and self.conn:
                 # Everything has worked so far.
                 self.connected = True
-                if debug_mode: print(("Connected to",self.DB_NAME))
+                if debug_mode: print("Connected to",self.DB_NAME)
                 if self.polling:
                     self.conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
                     self.cursor.execute("LISTEN {0};".format(self.table))
             else:
-                print(("Problem with conn,cursor:",self.conn,self.cursor))
+                print("Problem with conn,cursor:",self.conn,self.cursor)
             return self.conn,self.cursor
     def close(self,**kwargs):
         debug_mode = kwargs.get('debug_mode',False)  
@@ -173,10 +173,10 @@ class AvpDB(object):
                 try:
                     self.conn.close()
                 except Exception as e:
-                    print(("Unable to close database:{0}".format(e)))
+                    print("Unable to close database:{0}".format(e))
                 self.connected = False
             elif debug_mode:
-                print(("Connection to {0} already closed".format(self.table)))
+                print("Connection to {0} already closed".format(self.table))
     def commit(self,**kwargs):
         print(" No need to call commit, no action taken.")
     def _commit(self,**kwargs):
@@ -184,7 +184,7 @@ class AvpDB(object):
             try:
                 self.conn.commit()
             except Exception as e:
-                print(("Unable to commit to database:{0}".format(e)))
+                print("Unable to commit to database:{0}".format(e))
     def insert(self,log_items,**kwargs):
         '''
         
@@ -195,7 +195,7 @@ class AvpDB(object):
             if 'loc_code' in self.columns:
                 log_items['loc_code'] = log_items.pop('loc_code',self.hostname) #If no loc_code is specified, use self.hostname
             insert_command = self._gen_string('INSERT INTO',log_items,**kwargs)
-            if debug_mode: print(('about to execute db command: ' + insert_command))
+            if debug_mode: print('about to execute db command: ' + insert_command)
             if not self.connected:
                 self._connect(**kwargs)
             try:
@@ -213,8 +213,8 @@ class AvpDB(object):
             except psycopg2.DataError as e:
                 print(("couldn't insert: {e}".format(e=e)))
             except Exception as e:
-                print(('Error writing to database: '+str(e)))
-                print(('string: {0}\r\nvalues: {1}'.format(insert_command,log_items)))
+                print('Error writing to database: '+str(e))
+                print('string: {0}\r\nvalues: {1}'.format(insert_command,log_items))
                 traceback.print_exc()
                 result = False
             finally:
@@ -242,7 +242,7 @@ class AvpDB(object):
                                                    where_oper=where_oper,
                                                    returning=False,
                                                    **kwargs)
-                print(("Executing: {0},{1}".format(delete_command,where_condition)))
+                print("Executing: {0},{1}".format(delete_command,where_condition))
                 if not self.connected:
                     self._connect(**kwargs)
                 try:
@@ -260,7 +260,7 @@ class AvpDB(object):
                         log_items['time'] = datetime(t.year,t.month,t.day,t.hour,t.minute,t.second, t.microsecond + 100, t.tzinfo)
                         delete_command = self._gen_string('INSERT INTO',log_items,**kwargs)    
             except Exception as e:
-                print(('Error deleteing records from database: '+str(e)))
+                print('Error deleteing records from database: '+str(e))
                 traceback.print_exc()
                 result = False
             finally:
@@ -286,17 +286,17 @@ class AvpDB(object):
                                                   where_join=where_join,
                                                   where_oper=where_oper,
                                                   **kwargs)
-                if debug_mode: print(("Executing: {0},{1}".format(select_command,where_condition)))
+                if debug_mode: print("Executing: {0},{1}".format(select_command,where_condition))
                 self.cursor.execute(select_command,where_condition)
                 if 'all' in fetch_type:
                     result =  self.cursor.fetchall()
                 elif 'one' in fetch_type:
                     result =  self.cursor.fetchone()
                 else:
-                    print(("Error, did not recognize fetch_type: {0}".format(fetch_type)))
+                    print("Error, did not recognize fetch_type: {0}".format(fetch_type))
                     result = None
             except Exception as e:
-                print(("Error in AvpDB.select b: {0}".format(e)))
+                print("Error in AvpDB.select b: {0}".format(e))
             finally:
                 if not self.polling:
                     self.close(**kwargs)
@@ -311,7 +311,7 @@ class AvpDB(object):
         if where_condition is None:
             where_condition = {}
         if self.enabled:
-            if debug_mode: print(("Updating with {0} and {1}".format(set_values,where_condition)))
+            if debug_mode: print("Updating with {0} and {1}".format(set_values,where_condition))
             try:
                 if not self.connected:
                     self._connect(**kwargs)
@@ -322,7 +322,7 @@ class AvpDB(object):
                                                       where_join=where_join,
                                                       where_oper=where_oper,
                                                       **kwargs)
-                    if debug_mode: print(("Using commands ({0},{1})".format(update_command,set_values)))
+                    if debug_mode: print("Using commands ({0},{1})".format(update_command,set_values))
                     self.cursor.execute(update_command,set_values) # returns None
                     result = {'result':'ok'}
                     self._commit(**kwargs)
@@ -338,12 +338,12 @@ class AvpDB(object):
                                                           set_values,
                                                           where_condition=where_condition,
                                                           **kwargs)
-                        if debug_mode: print(("Using commands ({0},{1})".format(update_command,set_values)))
+                        if debug_mode: print("Using commands ({0},{1})".format(update_command,set_values))
                         self.cursor.execute(update_command,set_values)
             except Exception as e:
                 message =  'Error writing to database: '+str(e)
                 print(message)
-                print(('string: {0}\r\nvalues: {1}'.format(update_command,set_values)))
+                print('string: {0}\r\nvalues: {1}'.format(update_command,set_values))
                 traceback.print_exc()
                 result = {'error':{'message':message,'code':0}}
             finally:
@@ -351,7 +351,7 @@ class AvpDB(object):
                     self.close(**kwargs)
         else:
             result = {'error':{'message':'database not enabled.','code':0}}
-        if debug_mode: print(("result['avp_db.AvpDB.update'] = {0}".format(result)))
+        if debug_mode: print("result['avp_db.AvpDB.update'] = {0}".format(result))
         return result
     def _gen_string(self,exec_type,set_values,where_condition=None,where_join='AND',where_oper='=',returning=False,**kwargs):
         '''
@@ -395,7 +395,7 @@ class AvpDB(object):
                 else:
                     exec_command += ' FROM {0}'.format(self.table)
             else:
-                print(("Unknown query type: {0}".format(exec_type)))
+                print("Unknown query type: {0}".format(exec_type))
                 return None
             if where_condition: 
                 exec_command += ' WHERE '
@@ -426,7 +426,7 @@ class AvpDB(object):
                 exec_command += ' RETURNING {0}'.format(returning)
             exec_command += ";"
         else:
-            print(("Error: {0} not in {1}".format(exec_type,valid_types)))
+            print("Error: {0} not in {1}".format(exec_type,valid_types))
             exec_command = None
         return exec_command
     def poll(self,**kwargs):
@@ -437,7 +437,7 @@ class AvpDB(object):
                 self.conn.poll()
                 while self.conn.notifies: 
                     result = self.conn.notifies.pop()
-                    if debug_mode: print(("Got NOTIFY:", result))
+                    if debug_mode: print("Got NOTIFY:", result)
             except psycopg2.OperationalError as e:
                 # If this happens we should close and re-open the table.
                 self.logger.warning('Polling error {0} closing  and re-connecting polled database connection.'.format(e))
@@ -463,7 +463,7 @@ class TransectDB(AvpDB):
     def transect_number(self,**kwargs):
         debug_mode = kwargs.get('debug_mode',False) 
         result = self.select(('max(cast_no)',),fetch_type='one',**kwargs)[0]
-        if debug_mode: print(("transect_number result:{0}".format(result)))
+        if debug_mode: print("transect_number result:{0}".format(result))
         return  {'result':result}
     def start(self,transect_number,**kwargs):
         '''

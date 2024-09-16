@@ -2,6 +2,7 @@ package edu.unc.ims.instruments.ysi;
 
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.net.SocketException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -18,7 +19,8 @@ import edu.unc.ims.avp.Logger.LogLevel;
 import edu.unc.ims.instruments.UnknownStateException;
 import edu.unc.ims.instruments.UnsupportedStateException;
 import edu.unc.ims.instruments.TimeoutException;
-
+import java.util.concurrent.locks.ReentrantLock;
+ 
 //this is only used to get config file information
 import edu.unc.ims.avp.Broker;
 
@@ -472,10 +474,15 @@ public final class Sonde6 implements Runnable {
     public Long readSondeDateTime() throws Exception {
         SimpleDateFormat ft = new SimpleDateFormat ("MM/dd/yy H:mm:ss");
         Long lt = 0L;
-        
+
         String sDateTime = "";
         String cmd = "date\r\n";
-        expect(cmd, 6, "#");
+        try {
+            expect(cmd, 6, "#");        // sometimes this takes two tries
+        } catch (Exception e) {             
+            expect(cmd, 6, "#");        // if the 2nd try doesn't work
+            throw e;                    // bail out
+        }
         synchronized(mLines) {
             /* Should return something like:
                 date
@@ -795,6 +802,9 @@ public final class Sonde6 implements Runnable {
                 } catch(Exception e) {
                     if (e instanceof SocketTimeoutException) {
                         continue;
+                    } else if (e instanceof SocketException) {
+                        checkSocket();
+                        continue;
                     } else {
                         e.printStackTrace();
                         error = true;
@@ -937,19 +947,37 @@ public final class Sonde6 implements Runnable {
 
     /*
     Try to re-establish a broken socket and re-issue command
+    The lock handles simultaneous calls from the main thread and the run thread.
     */
     private boolean checkSocket()  {
-        boolean result = false;
+        if (lock.tryLock())
+        {
+            // Got the lock
+            try {
+                boolean result = false;
 
-        try { 
-            connectSocket();
-            result = true;  // assume no exception means success
-            mLogger.log("Socket re-connected.", this.getClass().getName(),  LogLevel.DEBUG);
-        } catch (Exception e) {
-            // do nothing
-            mLogger.log("checkSocket threw exception attempting to reconnect.", this.getClass().getName(),  LogLevel.DEBUG);
+                try { 
+                    connectSocket();
+                    result = true;  // assume no exception means success
+                    mLogger.log("Socket re-connected.", this.getClass().getName(),  LogLevel.DEBUG);
+                } catch (Exception e) {
+                    // do nothing
+                    mLogger.log("checkSocket threw exception attempting to reconnect.", this.getClass().getName(),  LogLevel.DEBUG);
+                }
+                return result;
+            }
+            finally
+            {
+                // Make sure to unlock so that we don't cause a deadlock
+                lock.unlock();
+            }
         }
-        return result;
+        else
+        {
+            return true;    // if locked, assume the other thread might succeed
+                            // the main thread will set the state to disconnected
+                            // where the run thread will just keep trying
+        }
     }
 
     /**
@@ -1116,4 +1144,6 @@ public final class Sonde6 implements Runnable {
      */
     private long mSamplingStartTime= 0;
     private int  mSamplingMaxTime  = 3600 * 1000;
+    
+    private final ReentrantLock lock = new ReentrantLock();     // used in checkSocket()
 }

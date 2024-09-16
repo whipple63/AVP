@@ -1,0 +1,33 @@
+BEGIN;
+INSERT INTO `hostname`_schedule VALUES ( 3, '`hostname`', '00', '12', '29', '08', 'f', 't',  1, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES ( 4, '`hostname`', '00', '12', '29', '08', 'f', 't',  2, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES ( 5, '`hostname`', '00', '12', '29', '08', 'f', 't',  3, 0.200, 1000);
+                                                             
+INSERT INTO `hostname`_schedule VALUES ( 6, '`hostname`', '00', '15', '29', '08', 'f', 't',  4, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES ( 7, '`hostname`', '00', '15', '29', '08', 'f', 't',  5, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES ( 8, '`hostname`', '00', '15', '29', '08', 'f', 't',  6, 0.200, 1000);
+                                                             
+INSERT INTO `hostname`_schedule VALUES ( 9, '`hostname`', '00', '18', '29', '08', 'f', 't',  7, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES (10, '`hostname`', '00', '18', '29', '08', 'f', 't',  8, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES (11, '`hostname`', '00', '18', '29', '08', 'f', 't',  9, 0.200, 1000);
+                                                             
+INSERT INTO `hostname`_schedule VALUES (12, '`hostname`', '00', '21', '29', '08', 'f', 't', 10, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES (13, '`hostname`', '00', '21', '29', '08', 'f', 't', 11, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES (14, '`hostname`', '00', '21', '29', '08', 'f', 't', 12, 0.200, 1000);
+
+INSERT INTO `hostname`_schedule VALUES (15, '`hostname`', '00', '00', '30', '08', 'f', 't', 13, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES (16, '`hostname`', '00', '00', '30', '08', 'f', 't', 14, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES (17, '`hostname`', '00', '00', '30', '08', 'f', 't', 15, 0.200, 1000);
+                                                             
+INSERT INTO `hostname`_schedule VALUES (18, '`hostname`', '00', '03', '30', '08', 'f', 't', 16, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES (19, '`hostname`', '00', '03', '30', '08', 'f', 't', 17, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES (20, '`hostname`', '00', '03', '30', '08', 'f', 't', 18, 0.200, 1000);
+                                                             
+INSERT INTO `hostname`_schedule VALUES (21, '`hostname`', '00', '06', '30', '08', 'f', 't', 19, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES (22, '`hostname`', '00', '06', '30', '08', 'f', 't', 20, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES (23, '`hostname`', '00', '06', '30', '08', 'f', 't', 21, 0.200, 1000);
+
+INSERT INTO `hostname`_schedule VALUES (24, '`hostname`', '00', '09', '30', '08', 'f', 't', 22, 3.000, 1000);
+INSERT INTO `hostname`_schedule VALUES (25, '`hostname`', '00', '09', '30', '08', 'f', 't', 23, 1.500, 1000);
+INSERT INTO `hostname`_schedule VALUES (26, '`hostname`', '00', '09', '30', '08', 'f', 't', 24, 0.200, 1000);
+COMMIT;

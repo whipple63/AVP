@@ -15,11 +15,13 @@ import os
 import signal
 import socket
 from subprocess import Popen, PIPE
+import subprocess
 import sys
 import threading
 from time import sleep, strptime
 # Installed Modules
 from configobj import ConfigObj
+# if os.name is 'posix':
 import psutil
 import pytz
 # Custom Modules
@@ -56,6 +58,7 @@ class Supervisor(object):
         self.LOG_PATH = self._config.get('supervisor', {}).get('LOG_PATH', self.HOME_PATH + '\log')
         self.CHECK_FREQ = int(self._config.get('supervisor', {}).get('CHECK_FREQ', 1))
         self.LOG_FREQ = int(self._config.get('supervisor', {}).get('LOG_FREQ', 1))
+        self.GPS_DEVICE = self._config.get('supervisor', {}).get('GPS_DEVICE', '/dev/gps')
         self.LOCAL_INTERFACE = avp_util.t_or_f(self._config.get('supervisor', {}).get('LOCAL_INTERFACE', True))
         # Time in sec to sleep after starting aio for the first time
         self.POST_AIO_BROKER_SLEEP = float(self._config.get('supervisor', {}).get('POST_AIO_BROKER_SLEEP', 5))
@@ -111,6 +114,7 @@ class Supervisor(object):
         while self._running:
             if datetime.now(pytz.reference.LocalTimezone()).second == 0 or check_cs is True:
                 if datetime.now(pytz.reference.LocalTimezone()).minute % self.CHECK_FREQ == 0 or check_cs is True:
+                    self._check_serial()    # check and set up the serial ports
                     self._check_java_brokers()   # check the brokers
                     if self.loops >= 1:  # Skip the first loop to give brokers time to get going.
                         if hasattr(self, 'sonde') is False:   # Skip the first loop to give brokers time to get going.
@@ -120,12 +124,13 @@ class Supervisor(object):
                         self._check_py_processes()  # Check python processes.
                     self._check_connections_and_subscriptions()   
                     self._check_controller()
+                    self._check_gpsd()
                     self.loops += 1
                 if datetime.now(pytz.reference.LocalTimezone()).minute % self.LOG_FREQ == 0:
                     self._do_env_logging()
             if self.loops == 1:
-                sleep(20)   # TESTING
-                # sleep(60)
+                # sleep(20)   # TESTING
+                sleep(60)
             else:
                 sleep(1)
                 # Now check if any brokers have disconnected and re-check every 1second.
@@ -162,9 +167,10 @@ class Supervisor(object):
         """
         low_drive_threshold = float(self._config['supervisor'].get('LOW_DRIVE_THRESHOLD', 0.10))
         low_ram_threshold = float(self._config['supervisor'].get('LOW_RAM_THRESHOLD', 0.10))
-        drives = {'root': {'mount': '/', 'field': 'disk_free_root'}}
+        drives = {'root': {'mount': '/', 'field': 'disk_free_root'},
+                  'database': {'mount': '/data', 'field': 'disk_free_data'}}
         for drive, info in list(drives.items()):
-            if os.name == 'posix':
+            if os.name is 'posix':
                 s_drive = os.statvfs(info['mount'])
                 drive_pct = float(s_drive.f_bavail) / s_drive.f_blocks
                 self.log_items[info['field']] = drive_pct * 100
@@ -186,7 +192,7 @@ class Supervisor(object):
                 self._logger.debug(drive_message.format(pct=pct, thresh=thresh, drive=drive, r1=r1, r2=r2))
         # check percentage of available memory
         # mem = psutil.phymem_usage()
-        # if os.name == 'posix':
+        # if os.name is 'posix':
         # free_memory_pct = float(mem.total - mem.used + psutil.cached_phymem()) / mem.total
         free = 100.0 - psutil.virtual_memory().percent
         # else:
@@ -198,7 +204,7 @@ class Supervisor(object):
         else:
             self._logger.debug(mem_message.format(free=free, range='above', thresh=low_ram_threshold*100))
         # check CPU temperature
-        if os.uname()[4] == 'armv7l' or os.uname()[4] == 'aarch64':
+        if os.uname()[4] == 'armv7l':
             # On the RPi
             temp_deg_c = int(open('/sys/class/thermal/thermal_zone0/temp').read()) / 1e3
             self._log_CPU_temp(temp_deg_c)
@@ -222,10 +228,69 @@ class Supervisor(object):
                 message = 'Could not parse CPU Temp: {0}\n{1}\n{2}\n{3}\n{4}'.format(temp_deg_cstr, w, str_x, y, z)
                 self._logger.debug(message)
 
+    def _check_gpsd(self):
+        oput=''
+        try:
+            #cmd = "/usr/bin/timeout 5 /usr/bin/gpsctl " + self.GPS_DEVICE
+            #oput = subprocess.check_output(cmd, shell=True)
+            x = 6   # seconds
+            delay = 1.0
+            timeout = int(x / delay)
+            cmd = "/usr/bin/gpsctl " + self.GPS_DEVICE
+            task = subprocess.Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+            #while the process is still executing and we haven't timed-out yet
+            while task.poll() is None and timeout > 0:
+                #do other things too if necessary e.g. print, check resources, etc.
+                sleep(delay)
+                timeout -= delay
+            if task.poll() is None:     # still not done
+                task.terminate()
+            else:
+                oput, err = task.communicate()
+        except subprocess.CalledProcessError as e:
+            pass
+        #print('gpsctl output: ', oput)
+        if "NMEA" not in oput:
+            self._logger.warning('NMEA gps device not found via gpsctl.  Adding device via gpsdctl.')
+            cmd = "sudo /usr/sbin/gpsdctl add " + self.GPS_DEVICE
+            #print('sending: ', cmd)
+            ecode = subprocess.call(cmd, shell=True)
+            #print('error code: ', ecode)
+            # get the PID of gpsd and send a SIGHUP
+            for process in psutil.process_iter():
+                #print('checking: ', process.name())                
+                if "gpsd" in process.name():
+                    #print('found gpsd pid: ', process.pid)
+                    cmd="sudo /bin/kill -s 1 " + str(process.pid)
+                    #print('sending: ', cmd)
+                    subprocess.call(cmd, shell=True) 
+                    break  
+        else:
+            self._logger.debug('Found NMEA gps device')
+        
+
     def _do_env_logging(self):
         self.log_items['sample_time'] = datetime.now(pytz.reference.LocalTimezone())
         self.power_db.buffered_insert(self.log_items)
         self.log_items.clear()
+
+    def _check_serial(self):
+        """Check serial ports and try to set correct baud rate."""
+        self._logger.debug('Checking serial ports')
+        try:
+            # check and/or set the baud rates on the serial ports
+            serial_devices = self._config['serial']['SERIAL_DEVICES']
+            serial_bauds = self._config['serial']['SERIAL_BAUDS']
+        except KeyError as e:
+            self._logger.critical('Error finding configuration key ' + str(e))
+            sys.exit(1)
+
+        for device, baud in zip(serial_devices, serial_bauds):
+            # User must be a member of group dialout for this to work
+            d_speed = os.popen("stty -F " + device + " speed").read().rstrip('\n')
+            if d_speed != baud:
+                self._logger.info("Baud rate mis-match. Calling: stty -F {0} {1}".format(device, baud))
+                os.popen("stty -F {0} {1}".format(device, baud))
 
     def _check_py_processes(self):
         """Checks for the following python processes and instantiates them as necessary:
@@ -347,14 +412,14 @@ class Supervisor(object):
                                         self._logger.warning('Broker {0} not responding.'
                                                              'Killing for restart.'.format(broker))
                                         getattr(self, '_' + broker_list[broker]).disconnect()
-                                        if os.name == 'posix':
+                                        if os.name is 'posix':
                                             os.kill(pid, signal.SIGTERM)
                                         broker_info_list[-1].pid = 0     # Mark the broker as needing startup
                                 except Exception as e:
                                     self._logger.warning('Broker {0} not responding -'
                                                          ' threw exception {1}. Killing for restart.'.format(broker, e))
                                     getattr(self, '_'+broker_list[broker]).disconnect()
-                                    if os.name == 'posix':
+                                    if os.name is 'posix':
                                         os.kill(pid, signal.SIGTERM)
                                     broker_info_list[-1].pid = 0     # Mark the broker as needing startup
                             else:
@@ -467,4 +532,3 @@ if __name__ == "__main__":
         sup.main_loop()
     except KeyboardInterrupt:
         sup.shutdown()
-

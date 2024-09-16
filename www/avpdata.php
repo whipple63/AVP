@@ -12,7 +12,7 @@
 		if($result == "") {
 			echo "<B>Failed to search " . $dbname . "_wind</b><br>";
 		}		
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		echo "\n\t<wind ";
 		// Loop on rows in the result set.
 		for($ri = 0; $ri < $numrows; $ri++) {
@@ -33,7 +33,7 @@
 		if($result == "") {
 			echo "<B>Failed to search " . $dbname . "_gps</b><br>";
 		}		
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		echo "\n\t<gps ";
 		// Loop on rows in the result set.
 		for($ri = 0; $ri < $numrows; $ri++) {
@@ -48,7 +48,7 @@
 		if($result == "") {
 			echo "<B>Failed to search " . $dbname . "_depth</b><br>";
 		}		
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		echo "\n\t<depth ";
 		// Loop on rows in the result set.
 		for($ri = 0; $ri < $numrows; $ri++) {
