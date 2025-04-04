@@ -2,6 +2,7 @@ package edu.unc.ims.instruments.ysi_exo;
 
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.net.SocketException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import edu.unc.ims.instruments.TimeoutException;
 
 //this is only used to get config file information
 import edu.unc.ims.avp.Broker;
+
 
 
 /**
@@ -126,6 +128,8 @@ public final class EXO2 implements Runnable {
         // get config file info if exists
         if (mBroker != null) {
             mSamplingMaxTime = Integer.parseInt(mBroker.getProperties().getProperty("sampling_max_time", "3600")) * 1000;
+            System.out.println("sampling_max_time set to: " + mSamplingMaxTime);
+            mBroker.getProperties().list(System.out);
         }
 
         // get values for the sonde data that is kept out of run-time
@@ -431,8 +435,8 @@ public final class EXO2 implements Runnable {
                 
         today = new Date();
         String sDateTime = sysft.format(today);
-		//System.out.println(sDateTime);
-		
+        //System.out.println(sDateTime);
+        
         String cmd = "time\r";
         expect(cmd, 30, "#");
         synchronized(mLines) {
@@ -444,7 +448,7 @@ public final class EXO2 implements Runnable {
             if (mLines.size() >= 3) { sDateTime = sDateTime.trim() + " " + mLines.get(1).trim(); }
         }
         clearExpectBuffer();
-		//System.out.println(sDateTime);
+        //System.out.println(sDateTime);
         
         try {
             lt = ft.parse(sDateTime).getTime();
@@ -569,8 +573,8 @@ public final class EXO2 implements Runnable {
         Long sysTime = today.getTime();
         sondeTime = new Date(readSondeDateTime());
 
-		timeFormatter = new SimpleDateFormat("H:mm:ss");
-		sondeTimeOut = timeFormatter.format(new Date(sondeTime.getTime()));  //because this is an EXO we only have time, date can't be set
+        timeFormatter = new SimpleDateFormat("H:mm:ss");
+        sondeTimeOut = timeFormatter.format(new Date(sondeTime.getTime()));  //because this is an EXO we only have time, date can't be set
         
         Logger.getLogger().log("ClockSync read sonde clock as: " +
                 sondeTimeOut + ", system time is: " + timeFormatter.format(new Date(sysTime)),
@@ -700,6 +704,8 @@ public final class EXO2 implements Runnable {
                 } catch(Exception e) {
                     if (e instanceof SocketTimeoutException) {
                         continue;
+                    } else if (e instanceof SocketException) {
+                        continue;
                     } else {
                         e.printStackTrace();
                         error = true;
@@ -776,26 +782,8 @@ public final class EXO2 implements Runnable {
      * @throws Exception
      */
     private void expect(final String cmd, final long ttl_secs, final String target) throws Exception { 
-        if ( !mBroker.getBrokeredDevice().getSampling() ) { // not if we are already sampling
-            // Need to wake instrument if it has gone to sleep
-            int maxTries = 10;
-            for(int i=0;i<maxTries;i++) {
-                clearExpectBuffer();
-
-//                System.out.println("Sending cr #" + i);
-                mWriter.print("sn\r");  // anything to force a response
-                mWriter.flush();
-
-                // If the instrument was asleep this will wake it up, but time out
-                // If it was awake it will read one prompt
-                try { waitForLines(2, 1);   // # lines, 1 second
-                } catch (Exception e) { /* keep trying if this times out */
-                    continue;
-                }
-                clearExpectBuffer();
-                break;  // if we get here we are done
-            }
-        }
+        
+        contact_sonde();
         
 //        System.out.println("Sending command:" + cmd);
         mWriter.print("\b\b" + cmd);
@@ -809,6 +797,35 @@ public final class EXO2 implements Runnable {
         }
     }
 
+    private void contact_sonde() { 
+        if ( !mBroker.getBrokeredDevice().getSampling() ) { // not if we are already sampling
+        
+            // Need to wake instrument if it has gone to sleep
+            int maxTries = 5;
+            for(int i=0;i<maxTries;i++) {
+                clearExpectBuffer();
+
+                mWriter.print("sn\r");  // anything to force a response
+                mWriter.flush();
+
+                // If the instrument was asleep this will wake it up, but time out.
+                // If it was awake it will read one prompt.
+                try { waitForLines(2, 1);   // # lines, 1 second
+                } catch (Exception e) { /* keep trying if this times out */
+                    if ( i > 2 ) {    // Sonde may be disconnected, try to reconnect
+                        disconnect();
+                        mLogger.log("Sonde not responding. It may have become disconnected.  Trying to reconnect. ", this.getClass().getName(),  LogLevel.WARN);
+                        try { connect();
+						} catch (Exception ee) { continue; }
+                    }
+                    continue;
+                }
+                clearExpectBuffer();
+                break;  // if we get here we are done
+            }
+        }
+    }
+ 
     /*
     Wait for a certain number of lines to be read.
     */

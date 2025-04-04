@@ -141,6 +141,7 @@ public class Gpsd implements Runnable,GpsdListener {
 
         mBW = null;     // drop the buffered writer
         mBR = null;     // drop the buffered reader
+        try { mSocket.close(); } catch (IOException ee) { /* so the close failed, move on */ }
         mSocket = null; // destroy the socket
         }
 

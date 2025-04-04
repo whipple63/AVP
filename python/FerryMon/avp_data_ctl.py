@@ -36,7 +36,7 @@ class Transect(object):
                                     'logging']      # Are we logging to the database
     REQUIRED_GPS_SUBSCRIPTIONS = ('lat','lon','mode')
     REQUIRED_FLOW_SUBSCRIPTIONS = ['flowrate', 'flowrate_mean30']
-    WIPE_TIMEOUT = 120  # If we're still wiping after this many seconds, abort transect.
+    WIPE_TIMEOUT = 240  # If we're still wiping after this many seconds, abort transect.
     
     def __init__(self,program_name=__name__,**kwargs):
         '''

@@ -40,9 +40,10 @@ public class PiPlateStack extends IOInstrument {
 
         // PiPlate board addresses will always start at 0 and increment
         
-        // Relays come in multiples of 7 on pi-plate relay boards
+        // Relays come in multiples of 7 on pi-plate relay boards, the new relay plate2 has 8
+		// will assume 8 and most significant bit may or may not be useful
         int nRelays = Integer.parseInt(mBroker.getProperties().getProperty(adapterName + "_relays"));
-        int nb = (int) Math.ceil(nRelays/7.0);
+        int nb = (int) Math.ceil(nRelays/8.0);
         mRelayPlate = new RELAYPlate[nb];
         for (int i=0; i<nb; i++) { mRelayPlate[i] = new RELAYPlate(i); }
         

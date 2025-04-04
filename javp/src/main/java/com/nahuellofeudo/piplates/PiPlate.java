@@ -38,6 +38,8 @@ public abstract class PiPlate {
     private static synchronized void allocateGPIO() {
 
         // Try to enable non-privilidged GPIO access
+		// This allows non-root access to most functionality.  According to the pi4j docs:
+		// "Please note when non-privileged access is enabled, you will not be able to use any hardware PWM or CLOCK functions."
         GpioUtil.enableNonPrivilegedAccess();
         
         // Set up port pins
@@ -56,6 +58,7 @@ public abstract class PiPlate {
         if (descriptor == 0) {
             // Initialize SPI bus
             log.debug("Initializing SPI bus...");
+// I had to slow down quite a bit to get good reliable results - Tony Whipple            
 //            descriptor = Spi.wiringPiSPISetupMode(Spi.CHANNEL_1, 500000, Spi.MODE_0);
             descriptor = Spi.wiringPiSPISetupMode(Spi.CHANNEL_1, 50000, Spi.MODE_0);
         }
@@ -76,6 +79,7 @@ public abstract class PiPlate {
      * @param parameter1 1st parameter (command-dependent)
      * @param parameter2 2nd parameter (command-dependent)
      * @param bytesToReturn number of bytes to read back from the plate as a response
+     * @param processingDelay delay between write and read is sometimes required
      * @return a (possibly null) array of bytes with the plate's response
      */
     public byte [] ppCommand(int command, int parameter1, int parameter2, int bytesToReturn, int processingDelay) {
@@ -107,41 +111,31 @@ public abstract class PiPlate {
 
     /**
      * ppCommand with a default delay of 1ms
+     * @param command
+     * @param parameter1
+     * @param parameter2
+     * @param bytesToReturn
+     * @return 
      */
     public byte[] ppCommand(int command, int parameter1, int parameter2, int bytesToReturn) {
         return ppCommand(command, parameter1, parameter2, bytesToReturn, 1);
     }
 
     /**
-     * Transfers data to and/or from a Pi-Plate, one byte at a time, toggling Chip Select between bytes
+     * Transfers data to and/or from a Pi-Plate
      * @param channel channel number (normally 1)
      * @param data the data to send, or the buffer where to put the data received
      * @param length number of bytes to send/receive
-     */
-//    private void transferDataIn(int channel, byte [] data, int length) {
-//        byte [] dummy = new byte[1];
-//        for(int x = 0; x < length; x++) {
-////            dummy[0] = data[x];
-//            dummy[0] = 0;
-//            Spi.wiringPiSPIDataRW(channel, dummy, 1);
-////            try { Thread.sleep(0,1); } catch (Exception e) {}
-//            data[x] = dummy[0];
-//        }
-//    }
-    
+     */    
     private void transferData(int channel, byte [] data, int length) {
-//        byte [] dummy = new byte[1];
-//        for(int x = 0; x < length; x++) {
-//            dummy[0] = data[x];
+        // I was able to remove all of the overhead here with the slower timing during init.
+        // I left the routine in case anything needs to be added back.
             Spi.wiringPiSPIDataRW(channel, data, length);
-//            try { Thread.sleep(0, 500); } catch (Exception e) {}
-//            data[x] = dummy[0];
-//        }
     }
 
 
     /* --------- System commands --------- */
-        /**
+    /**
      * Returns the Hardware revision
      * @return Double containing hardware revision of the plate
      */

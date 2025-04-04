@@ -1,0 +1,12 @@
+[Unit]
+Description=Wait for TCP port 55242 to be available
+Wants=network.target
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'while ! ncat -z localhost 55242; do sleep 1; done'
+
+[Install]
+WantedBy=multi-user.target
+

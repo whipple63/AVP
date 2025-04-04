@@ -11,7 +11,7 @@ import com.nahuellofeudo.piplates.PiPlateException;
 public class DAQCPlate extends PiPlate {
 
     // The VCC Calibration value for ADC
-    double vccValue;
+    double vccValue;	// BUG Fix - Tony Whipple
 
     /**
      * Constructor
@@ -44,6 +44,7 @@ public class DAQCPlate extends PiPlate {
      * @return a string ID read from the board
      */
     public String getId() {
+		// Added by Tony Whipple
         int ID_LENGTH = 20;
         byte [] resp = ppCommand(0x01, 0, 0, ID_LENGTH);
         int length = ID_LENGTH;
@@ -61,6 +62,10 @@ public class DAQCPlate extends PiPlate {
      * @return addr - base_addr if the plate is there, 0 otherwise;
      */
     public byte getAddr() {
+		// It made more sense to me to return the actual address that the board
+		// is set to rather than the address including the base.  This does change
+		// the return value of a public method, and is different from the python code.
+		// Tony Whipple		
         byte [] response = ppCommand(0x00, 0, 0, 1);
         return (byte) (response[0] - getBaseAddr());
     }
@@ -222,7 +227,8 @@ public class DAQCPlate extends PiPlate {
      * @throws InvalidAddressException
      */
     public double getADC(int channel) throws InvalidParameterException {
-        validateAnalogIn(channel);
+	// Major BUG fixes - Tony Whipple
+		validateAnalogIn(channel);
         
 //        byte [] resp = ppCommand(0x30, channel, 0, 2, 100);
         byte [] resp = ppCommand(0x30, channel, 0, 2, 1);
@@ -237,9 +243,13 @@ public class DAQCPlate extends PiPlate {
 
     /**
      * Reads the values of all 8 analog inputs
+	 * Broken as of Sept '17 - use getADC
      * @return an array of 8 ints containing the analog values
      */
     public double[] getADCAll() {
+	// Major BUG fixes - Tony Whipple
+	// Talked to piplate developer.  According to him this is 
+	// still broken due to ppCommand(0x31... being broken by recent kernel upgrade.
         double [] values = new double [8];
         byte[] resp = ppCommand(0x31, 0, 0, 16, 300);
         for (int i = 0; i < 8; i++) {
@@ -288,7 +298,7 @@ public class DAQCPlate extends PiPlate {
      */
     public void setDAC(int channel, double value) throws InvalidParameterException {
         if (value < 0 || value > 4.095) throw new InvalidParameterException("ERROR: DAC argument out of range - must be between 0 and 4.095 volts");
-        value = value/vccValue * 1024;
+        value = value/vccValue * 1024;	// BUG fix - Tony Whipple
         this.setPWM(channel, (int) value);
     }
 
@@ -348,6 +358,7 @@ public class DAQCPlate extends PiPlate {
 
 
     /* --------- Digital Output Functions --------- */
+	// Added by Tony Whipple, Sept '17
     public void setDOUTbit(int bit) throws InvalidParameterException {
         validateBitNum(bit);
         ppCommand(0x10,bit,0,0);

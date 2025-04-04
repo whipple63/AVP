@@ -407,7 +407,8 @@ public class EXO2Adapter extends BrokerAdapter implements EXO2Listener, Runnable
         BufferedPreparedStatement pstmt = new BufferedPreparedStatement(cmd);
         pstmt.setInt(1, new Integer(mCastNumber));
         pstmt.setString(2, tablePrefix);
-        pstmt.setTimestamp(3, ts);
+        //pstmt.setTimestamp(3, ts);
+		pstmt.setTimestamp(3, new Timestamp(mLastDataTime));	// because the date cant be set in software on the EXO, use now
         pstmt.setDouble(4, mLastReading.getDouble("temp_C"));
         pstmt.setDouble(5, mLastReading.getDouble("spcond_mScm"));
         pstmt.setDouble(6, mLastReading.getDouble("sal_ppt"));

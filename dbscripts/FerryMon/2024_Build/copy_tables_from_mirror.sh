@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x 
 
 echo
 echo This will copy the entire database called `hostname` from the mirror
@@ -17,16 +18,15 @@ fi
 dropdb --if-exists --host="localhost" --port=5432 --username=pi `hostname`
 
 echo copying data from mirror site
-pg_dump --host="wave.ims.unc.edu" --port=5432 --username=postgres `hostname` --table=`hostname`* > /data/dbdump
+pg_dump --host="wave.ims.unc.edu" --port=5432 --username=postgres `hostname` --table=`hostname`* > /home/pi/dbdump
 echo populating tables from mirror site data
 createdb --host="localhost" --port=5432 --username=pi `hostname`
-psql -U postgres -f /data/dbdump `hostname`
+psql -U pi  -h 127.0.0.1 -f /home/pi/dbdump `hostname`
 # create the local tables
-psql -U pi -d `hostname` -f avp_log
+psql -U pi  -h 127.0.0.1 -d `hostname` -f avp_log
 
 # now sequence values need to be updated
 echo updating sequence values
-psql -c "select setval('`hostname`_cast_cast_no_seq', max(cast_no)) from `hostname`_cast;" `hostname` 
-psql -c "select setval('`hostname`_log_entry_no_seq', max(entry_no)) from `hostname`_log;" `hostname` 
-psql -c "select setval('`hostname`_schedule_entry_no_seq', max(entry_no)) from `hostname`_schedule;" `hostname` 
-
+psql -U pi -h 127.0.0.1 -c "select setval('`hostname`_cast_cast_no_seq', max(cast_no)) from `hostname`_cast;" `hostname` 
+psql -U pi -h 127.0.0.1 -c "select setval('`hostname`_log_entry_no_seq', max(entry_no)) from `hostname`_log;" `hostname` 
+psql -U pi -h 127.0.0.1 -c "select setval('`hostname`_schedule_entry_no_seq', max(entry_no)) from `hostname`_schedule;" `hostname` 

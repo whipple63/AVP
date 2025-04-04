@@ -396,6 +396,10 @@ public final class Airmar200wx extends WindInstrument implements Runnable {
         cmd = "$PAMTC,EN,ZDA,1,20*";                 // satellite data every two seconds
         mWriter.print(cmd+getCheckSum(cmd)+"\r\n");
 //        System.out.print(".........................Wrote:"+cmd+getCheckSum(cmd)+"\r\n");
+
+        cmd = "$PAMTC,EN,RMC,1,20*";                 // satellite data every two seconds
+        mWriter.print(cmd+getCheckSum(cmd)+"\r\n");
+//        System.out.print(".........................Wrote:"+cmd+getCheckSum(cmd)+"\r\n");
         
         cmd = "$PAMTC,OPTION,SET,1,1*";              // use gps COG instead of compass course (if SOG > 3 knots)
         mWriter.print(cmd+getCheckSum(cmd)+"\r\n");

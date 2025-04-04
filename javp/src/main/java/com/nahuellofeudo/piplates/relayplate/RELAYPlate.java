@@ -36,6 +36,10 @@ public class RELAYPlate extends PiPlate {
      * @return addr - base_addr if the plate is there, 0 otherwise;
      */
     public byte getAddr() {
+		// It made more sense to me to return the actual address that the board
+		// is set to rather than the address including the base.  This does change
+		// the return value of a public method, and is different from the python code.
+		// Tony Whipple
         byte [] response = ppCommand(0x00, 0, 0, 1);
         return (byte) (response[0] - getBaseAddr());
     }
